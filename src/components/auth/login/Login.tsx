@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { TextField, Button, Typography, Link } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../services/firebase";
 import { emailFormat } from "../../../utils/validations";
 
 import "./Login.css";
 import { FirebaseError } from "firebase/app";
+import { useAppDispatch } from "../../../hooks/typedReduxHooks/typedReduxHooks";
+import { logIn } from "../../../reducers/authSlice";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -14,6 +16,9 @@ const Login = () => {
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -48,10 +53,12 @@ const Login = () => {
         );
         const token = await auth.currentUser?.getIdToken(false);
         console.log(user);
+        dispatch(logIn({ isLogged: true, email, uid: user.uid }));
         localStorage.setItem(
           "userData",
           JSON.stringify({ email, token, uid: user.uid })
         );
+        navigate("/home");
       }
     } catch (error) {
       if (error instanceof FirebaseError) {

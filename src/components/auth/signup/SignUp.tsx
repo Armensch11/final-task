@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
   fetchSignInMethodsForEmail,
@@ -34,6 +34,8 @@ const SignUp = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordRepeat, setShowPasswordRepeat] = useState(false);
+
+  const navigate = useNavigate();
 
   const showPasswordOnClick = (
     setter: React.Dispatch<React.SetStateAction<boolean>>
@@ -110,6 +112,7 @@ const SignUp = () => {
         );
         const user = userCredential.user;
         console.log("Sign-up successful:", user);
+        navigate("/login");
       }
     } catch (error) {
       console.error("Sign-up error:", error);
