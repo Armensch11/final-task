@@ -1,4 +1,10 @@
-import { Button, IconButton, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  TextField,
+  Typography,
+  styled,
+} from "@mui/material";
 import "./Home.css";
 import {
   useAppDispatch,
@@ -6,6 +12,13 @@ import {
 } from "../../hooks/typedReduxHooks/typedReduxHooks";
 import { logOut } from "../../reducers/authSlice";
 import filterIcon from "../../assets/filter-Icon.svg";
+import SearchResult from "../../components/searchResult/SearchResult";
+
+const StyledButton = styled(Button)({
+  fontSize: "14px",
+  textDecoration: "none",
+  textTransform: "none",
+});
 
 const Home = () => {
   const userEmail = useAppSelector((state) => state.authState.userEmail);
@@ -21,7 +34,7 @@ const Home = () => {
       <div className="home-container"></div>
       <div className="homePage-header">
         <Typography>{userEmail}</Typography>
-        <Button onClick={onLogout}>{"Logout"}</Button>
+        <StyledButton onClick={onLogout}>{"Log out"}</StyledButton>
       </div>
       <hr className="blue-line" />
       <div className="homePage-search">
@@ -48,7 +61,7 @@ const Home = () => {
           <img src={filterIcon} alt="filter icon" />
         </IconButton>
       </div>
-      <main className="homePage-main"></main>
+      <SearchResult />
     </>
   );
 };
