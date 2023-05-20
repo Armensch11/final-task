@@ -1,28 +1,19 @@
-import { Route, Navigate } from "react-router-dom";
+import { FC } from "react";
+import { Navigate } from "react-router-dom";
 
 interface ProtectedRouteProps {
-  path: string;
-  element: React.ReactNode;
   isAuth: boolean;
+  children: React.ReactNode;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
-  path,
-  element,
+const ProtectedRoute: FC<ProtectedRouteProps> = ({
   isAuth,
-}) => {
-  return (
-    <Route
-      path={path}
-      element={
-        isAuth ? (
-          <Route path={path} element={element} />
-        ) : (
-          <Navigate to="/login" replace />
-        )
-      }
-    />
-  );
+  children,
+}): React.ReactElement | null => {
+  if (!isAuth) {
+    return <Navigate to="/login" replace />;
+  }
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

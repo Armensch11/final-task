@@ -1,0 +1,38 @@
+.home-container {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 16px;
+  margin-bottom: auto;
+}
+.homePage-header {
+  height: 40px;
+  margin-left: 140px;
+  margin-right: 140px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  column-gap: 24px;
+  padding-right: 24px;
+}
+.blue-line {
+  height: 2px;
+
+  /* background: #1c69e6;
+  color: #1c69e6; */
+  border-color: #a4c5f6;
+}
+.homePage-search {
+  height: 40px;
+  margin: 30px 140px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 24px;
+}

@@ -23,11 +23,10 @@ const App = () => {
         <Route path="/" element={<InitialPage />}></Route>
         <Route path="/login" element={<LoginPage />}></Route>
         <Route path="/signup" element={<SignUpPage />}></Route>
-        <ProtectedRoute
+        <Route
           path="/home"
-          element={<Home />}
-          isAuth={isAuth}
-        ></ProtectedRoute>
+          element={<ProtectedRoute isAuth={isAuth}> {<Home />}</ProtectedRoute>}
+        ></Route>
       </Routes>
     </Fragment>
   );
