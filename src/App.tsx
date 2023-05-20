@@ -1,6 +1,6 @@
-import Home from "./components/home/Home";
-import Login from "./components/auth/login/Login";
-import SignUp from "./components/auth/signup/SignUp";
+import InitialPage from "./pages/InitialPage";
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
 
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
@@ -11,9 +11,9 @@ const App = () => {
   return (
     <Fragment>
       <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/signup" element={<SignUp />}></Route>
+        <Route path="/" element={<InitialPage />}></Route>
+        <Route path="/login" element={<LoginPage />}></Route>
+        <Route path="/signup" element={<SignUpPage />}></Route>
       </Routes>
     </Fragment>
   );

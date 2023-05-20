@@ -1,11 +1,4 @@
-.home-overlay {
-  width: 100vw;
-  height: 100vh;
 
-  background-image: url("../../assets/dna-collage.svg");
-  background-size: cover;
-  position: relative;
-}
 .home-content {
   display: flex;
   flex-direction: column;
