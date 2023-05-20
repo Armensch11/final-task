@@ -13,6 +13,8 @@ import {
 import { logOut } from "../../reducers/authSlice";
 import filterIcon from "../../assets/filter-Icon.svg";
 import SearchResult from "../../components/searchResult/SearchResult";
+import { useState } from "react";
+import { fetchData } from "../../reducers/searchSlice";
 
 const StyledButton = styled(Button)({
   fontSize: "14px",
@@ -23,7 +25,7 @@ const StyledButton = styled(Button)({
 const Home = () => {
   const userEmail = useAppSelector((state) => state.authState.userEmail);
   const dispatch = useAppDispatch();
-
+  const [searchTerm, setSearchTerm] = useState("Enter search value");
   const onLogout = () => {
     dispatch(logOut());
     localStorage.clear();
@@ -40,10 +42,20 @@ const Home = () => {
       <div className="homePage-search">
         <TextField
           type={"search"}
+          value={searchTerm}
+          onChange={(event) => {
+            setSearchTerm(event.target.value);
+          }}
+          onClick={() => {
+            setSearchTerm("");
+          }}
           sx={{ width: "80%", minWidth: "500px" }}
           InputProps={{ sx: { height: 40 } }}
         ></TextField>
         <Button
+          onClick={() => {
+            dispatch(fetchData(searchTerm));
+          }}
           sx={{
             width: "180px",
             borderRadius: "8px",
