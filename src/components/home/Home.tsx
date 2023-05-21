@@ -15,6 +15,7 @@ import filterIcon from "../../assets/filter-Icon.svg";
 import SearchResult from "../../components/searchResult/SearchResult";
 import { useState } from "react";
 import { fetchData } from "../../reducers/searchSlice";
+import { useSearchParams } from "react-router-dom";
 
 const StyledButton = styled(Button)({
   fontSize: "14px",
@@ -26,6 +27,9 @@ const Home = () => {
   const userEmail = useAppSelector((state) => state.authState.userEmail);
   const dispatch = useAppDispatch();
   const [searchTerm, setSearchTerm] = useState("Enter search value");
+  const [searchParams, setSearchParams] = useSearchParams({
+    query: searchTerm,
+  });
   const onLogout = () => {
     dispatch(logOut());
     localStorage.clear();
@@ -55,6 +59,7 @@ const Home = () => {
         <Button
           onClick={() => {
             dispatch(fetchData(searchTerm));
+            setSearchParams({ query: searchTerm });
           }}
           sx={{
             width: "180px",
