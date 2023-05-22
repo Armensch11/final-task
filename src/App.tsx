@@ -21,8 +21,8 @@ const App = () => {
     <Fragment>
       <Routes>
         <Route path="/" element={<InitialPage />}></Route>
-        <Route path="/login" element={<LoginPage />}></Route>
-        <Route path="/signup" element={<SignUpPage />}></Route>
+        <Route path="/auth/login" element={<LoginPage />}></Route>
+        <Route path="/auth/signup" element={<SignUpPage />}></Route>
         <Route
           path="/home"
           element={<ProtectedRoute isAuth={isAuth}> {<Home />}</ProtectedRoute>}

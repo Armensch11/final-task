@@ -121,7 +121,7 @@ const Login = () => {
             underline="hover"
             sx={{ color: "black", fontSize: "16px", fontWeight: "bold" }}
             component={RouterLink}
-            to="/signup"
+            to="/auth/signup"
           >
             {"Sign up"}
           </Link>

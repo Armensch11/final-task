@@ -18,7 +18,7 @@ const Home = () => {
           fullWidth={false}
           sx={{ backgroundColor: "#FFFFFF" }}
           component={Link}
-          to={"/login"}
+          to={"/auth/login"}
         >
           Login
         </Button>
