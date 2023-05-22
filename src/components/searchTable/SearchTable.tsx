@@ -1,13 +1,16 @@
 import {
+  Icon,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../hooks/typedReduxHooks/typedReduxHooks";
 import { v4 as uuidv4 } from "uuid";
+import SortIcon from "../../assets/sort-Icon.svg";
 import "./SearchTable.css";
 
 type TableData = {
@@ -35,14 +38,54 @@ const SearchTable = () => {
         <TableHead>
           <TableRow className="table-row">
             <TableCell className="column-name index">#</TableCell>
-            <TableCell className="column-name entry">Entry</TableCell>
-            <TableCell className="column-name entryName">Entry Name</TableCell>
-            <TableCell className="column-name gene">Gene</TableCell>
-            <TableCell className="column-name organism">Organism</TableCell>
-            <TableCell className="column-name location">
-              Subcellular Location
+            <TableCell className="column-name entry">
+              <div className="header-cell">
+                <Typography>Entry</Typography>
+                <Icon>
+                  <img src={SortIcon} alt="Filter Icon" />
+                </Icon>
+              </div>
             </TableCell>
-            <TableCell className="column-name length">Length</TableCell>
+            <TableCell className="column-name entryName">
+              <div className="header-cell">
+                <Typography>Entry Name</Typography>
+                <Icon>
+                  <img src={SortIcon} alt="Filter Icon" />
+                </Icon>
+              </div>
+            </TableCell>
+            <TableCell className="column-name gene">
+              <div className="header-cell">
+                <Typography>Gene</Typography>
+                <Icon>
+                  <img src={SortIcon} alt="Filter Icon" />
+                </Icon>
+              </div>
+            </TableCell>
+            <TableCell className="column-name organism">
+              <div className="header-cell">
+                <Typography>Organism</Typography>
+                <Icon>
+                  <img src={SortIcon} alt="Filter Icon" />
+                </Icon>
+              </div>
+            </TableCell>
+            <TableCell className="column-name location">
+              <div className="header-cell">
+                <Typography> Subcellular Location</Typography>
+                <Icon>
+                  <img src={SortIcon} alt="Filter Icon" />
+                </Icon>
+              </div>
+            </TableCell>
+            <TableCell className="column-name length">
+              <div className="header-cell">
+                <Typography>Length</Typography>
+                <Icon>
+                  <img src={SortIcon} alt="Filter Icon" />
+                </Icon>
+              </div>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

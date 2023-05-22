@@ -26,8 +26,8 @@ const StyledButton = styled(Button)({
 const Home = () => {
   const userEmail = useAppSelector((state) => state.authState.userEmail);
   const dispatch = useAppDispatch();
-  const [searchTerm, setSearchTerm] = useState("Enter search value");
-  const [searchParams, setSearchParams] = useSearchParams({
+  const [searchTerm, setSearchTerm] = useState("");
+  const [_, setSearchParams] = useSearchParams({
     query: searchTerm,
   });
   const onLogout = () => {
@@ -58,8 +58,13 @@ const Home = () => {
         ></TextField>
         <Button
           onClick={() => {
-            dispatch(fetchData(searchTerm));
-            setSearchParams({ query: searchTerm });
+            if (!searchTerm) {
+              dispatch(fetchData("n/a"));
+              setSearchParams({ query: "n/a" });
+            } else {
+              dispatch(fetchData(searchTerm));
+              setSearchParams({ query: searchTerm });
+            }
           }}
           sx={{
             width: "180px",

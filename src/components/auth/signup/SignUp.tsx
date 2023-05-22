@@ -18,6 +18,8 @@ import { emailFormat, passwordFormat } from "../../../utils/validations";
 
 import "./SignUp.css";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useAppDispatch } from "../../../hooks/typedReduxHooks/typedReduxHooks";
+import { logIn } from "../../../reducers/authSlice";
 
 const SignUp = () => {
   // const [email, setEmail] = useState("");
@@ -34,6 +36,7 @@ const SignUp = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordRepeat, setShowPasswordRepeat] = useState(false);
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
@@ -89,17 +92,11 @@ const SignUp = () => {
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    // Perform your sign-up logic here
-    // You can access the email, password, and passwordConfirmation values
-
-    // Example validation
     if (!emailRef.current?.value || !password || !passwordConfirmation) {
-      // Display an error message or perform appropriate actions
       return;
     }
 
     if (password !== passwordConfirmation) {
-      // Display an error message or perform appropriate actions
       return;
     }
 
@@ -112,7 +109,23 @@ const SignUp = () => {
         );
         const user = userCredential.user;
         console.log("Sign-up successful:", user);
-        navigate("/login");
+        dispatch(
+          logIn({
+            isLogged: true,
+            email: emailRef.current.value,
+            uid: user.uid,
+          })
+        );
+        const idToken = await user.getIdToken();
+        localStorage.setItem(
+          "userData",
+          JSON.stringify({
+            email: emailRef.current.value,
+            token: idToken,
+            uid: user.uid,
+          })
+        );
+        navigate("/home");
       }
     } catch (error) {
       console.error("Sign-up error:", error);
