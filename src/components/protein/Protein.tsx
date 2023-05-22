@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link as RouterLink } from "react-router-dom";
 import { Typography } from "@mui/material";
 import "./Protein.css";
 
@@ -62,6 +62,11 @@ const Protein = () => {
         <Typography variant="subtitle2">
           {protein?.genes[0].geneName.value}
         </Typography>
+      </div>
+      <div className="protein-info-main">
+        <RouterLink to="/">Details</RouterLink>
+        <RouterLink to="/">Feature Viewer</RouterLink>
+        <RouterLink to="/">Publications</RouterLink>
       </div>
     </div>
   );
