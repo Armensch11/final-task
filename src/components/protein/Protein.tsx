@@ -1,5 +1,6 @@
+
 import { useEffect, useState } from "react";
-import { useParams, Link as RouterLink } from "react-router-dom";
+import { useParams, Link as RouterLink, Outlet, Routes, Route } from "react-router-dom";
 import { Typography } from "@mui/material";
 import "./Protein.css";
 
@@ -10,6 +11,36 @@ interface ProteinData {
   genes: [{ geneName: { value: string } }];
   geneType: string;
 }
+
+const Details = () => {
+  const { proteinId } = useParams();
+
+  return (
+    <div>
+      <h1>Details for Protein {proteinId}</h1>
+    </div>
+  );
+};
+
+const Features = () => {
+  const { proteinId } = useParams();
+
+  return (
+    <div>
+      <h1>Features for Protein {proteinId}</h1>
+    </div>
+  );
+};
+
+const Publications = () => {
+  const { proteinId } = useParams();
+
+  return (
+    <div>
+      <h1>Publications for Protein {proteinId}</h1>
+    </div>
+  );
+};
 
 const Protein = () => {
   const { proteinId } = useParams();
@@ -44,6 +75,7 @@ const Protein = () => {
             backgroundColor: "#D8E7FF",
             borderRadius: "12px",
             padding: "2px 12px",
+            fontSize: "14px",
           }}
         >
           {protein?.organism.scientificName}
@@ -64,12 +96,19 @@ const Protein = () => {
         </Typography>
       </div>
       <div className="protein-info-main">
-        <RouterLink to="/">Details</RouterLink>
-        <RouterLink to="/">Feature Viewer</RouterLink>
-        <RouterLink to="/">Publications</RouterLink>
+        <RouterLink to={`./details`}>Details</RouterLink>
+        <RouterLink to={`./features`}>Feature Viewer</RouterLink>
+        <RouterLink to={`./publications`}>Publications</RouterLink>
       </div>
+      <Outlet />
+      <Routes>
+        <Route path="details" element={<Details />} />
+        <Route path="features" element={<Features />} />
+        <Route path="publications" element={<Publications />} />
+      </Routes>
     </div>
   );
 };
 
 export default Protein;
+
