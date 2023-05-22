@@ -4,7 +4,7 @@ import { useAppDispatch } from "../../hooks/typedReduxHooks/typedReduxHooks";
 
 import filterIcon from "../../assets/filter-Icon.svg";
 import SearchResult from "../../components/searchResult/SearchResult";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchData } from "../../reducers/searchSlice";
 import { useSearchParams } from "react-router-dom";
 
@@ -14,6 +14,11 @@ const Home = () => {
   const [_, setSearchParams] = useSearchParams({
     query: searchTerm,
   });
+
+  useEffect(() => {
+    dispatch(fetchData("n/a"));
+    setSearchParams({ query: "n/a" });
+  }, []);
 
   return (
     <>

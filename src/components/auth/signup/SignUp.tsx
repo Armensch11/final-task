@@ -125,7 +125,7 @@ const SignUp = () => {
             uid: user.uid,
           })
         );
-        navigate("/home");
+        navigate("/search");
       }
     } catch (error) {
       console.error("Sign-up error:", error);

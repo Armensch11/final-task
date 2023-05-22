@@ -58,7 +58,7 @@ const Login = () => {
           "userData",
           JSON.stringify({ email, token, uid: user.uid })
         );
-        navigate("/home");
+        navigate("/search");
       }
     } catch (error) {
       if (error instanceof FirebaseError) {

@@ -24,7 +24,7 @@ const App = () => {
         <Route path="/auth/login" element={<LoginPage />}></Route>
         <Route path="/auth/signup" element={<SignUpPage />}></Route>
         <Route
-          path="/home"
+          path="/search"
           element={<ProtectedRoute isAuth={isAuth}> {<Home />}</ProtectedRoute>}
         ></Route>
         <Route

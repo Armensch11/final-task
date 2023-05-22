@@ -28,11 +28,14 @@ const UserLayout: FC<UserLayoutProps> = ({ children }) => {
 
   return (
     <>
-      <div className="homePage-header">
-        <Typography>{userEmail}</Typography>
-        <StyledButton onClick={onLogout}>{"Log out"}</StyledButton>
+      <div className="homePage-header-container">
+        <div className="homePage-header">
+          <Typography>{userEmail}</Typography>
+          <StyledButton onClick={onLogout}>{"Log out"}</StyledButton>
+        </div>
+        <hr className="blue-line" />
       </div>
-      <hr className="blue-line" />
+
       <div className="content">{children}</div>
     </>
   );
