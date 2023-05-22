@@ -1,5 +1,18 @@
-.protein-details {
-  width: 600px;
-  overflow-wrap: break-word;
-  font-size: 10px;
+.protein-info-container {
+  margin: 72px 130px;
+}
+.protein-info-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  column-gap: 24px;
+  margin-bottom: 12px;
+}
+.protein-info-subheader {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+  justify-content: space-between;
+  align-items: flex-start;
 }

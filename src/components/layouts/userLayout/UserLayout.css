@@ -4,6 +4,7 @@
   left: 0;
   width: 100%;
   z-index: 999;
+  background-color: #ffffff;
 }
 .homePage-header {
   height: 40px;
