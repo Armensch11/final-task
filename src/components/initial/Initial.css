@@ -1,0 +1,11 @@
+
+.home-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 300px;
+  position: absolute;
+  top: 185px;
+  right: 226px;
+}
