@@ -8,6 +8,9 @@ import store from "../store/index";
 
 import App from "./App.tsx";
 
+
+
+
 ReactDOM.createRoot(document.querySelector("#root") as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
