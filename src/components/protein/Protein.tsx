@@ -35,6 +35,7 @@ const Protein = () => {
   const { proteinId } = useParams();
   const [protein, setProtein] = useState<ProteinData | null>(null);
   const dispatch = useAppDispatch();
+  const [activeLink, setActiveLink] = useState("");
 
   const getProteinData = async () => {
     try {
@@ -59,6 +60,10 @@ const Protein = () => {
     } catch (error) {
       console.error("Error fetching protein data:", error);
     }
+  };
+
+  const onLinkClick = (link: string) => {
+    setActiveLink(link);
   };
 
   useEffect(() => {
@@ -98,20 +103,32 @@ const Protein = () => {
         </Typography>
       </div>
       <div className="protein-info-main">
-        <RouterLink to={`./details`} className="link">
+        <RouterLink
+          to={`./details`}
+          className={`link ${activeLink === "details" ? "active" : ""}`}
+          onClick={() => onLinkClick("details")}
+        >
           Details
         </RouterLink>
-        <RouterLink to={`./features`} className="link">
+        <RouterLink
+          to={`./feature`}
+          className={`link ${activeLink === "feature" ? "active" : ""}`}
+          onClick={() => onLinkClick("feature")}
+        >
           Feature Viewer
         </RouterLink>
-        <RouterLink to={`./publications`} className="link">
+        <RouterLink
+          to={`./publications`}
+          className={`link ${activeLink === "publications" ? "active" : ""}`}
+          onClick={() => onLinkClick("publications")}
+        >
           Publications
         </RouterLink>
       </div>
       <Outlet />
       <Routes>
         <Route path="details" element={<Details />} />
-        <Route path="features" element={<Feature />} />
+        <Route path="feature" element={<Feature />} />
         <Route path="publications" element={<Publications />} />
       </Routes>
     </div>
