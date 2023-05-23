@@ -1,0 +1,65 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import PublicItem from "../publications/publicItem/publicItem";
+import { v4 as uuidv4 } from "uuid";
+
+interface PublicationResponse {
+  results: PublicationInfo[];
+}
+interface Reference {
+  referencePositions: string[];
+  sourceCategories: string[];
+  source: { name: string };
+}
+
+interface PublicationInfo {
+  citation: {
+    authors: string[];
+    citationCrossReference: string[];
+    title: string;
+  };
+  references: Reference[];
+}
+
+const Publics = () => {
+  const { proteinId: entry } = useParams();
+  const [publicationsInfo, setPublicationsInfo] =
+    useState<PublicationResponse>();
+
+  const getPublics = async () => {
+    try {
+      const result = await fetch(
+        `https://rest.uniprot.org/uniprotkb/${entry}/publications`
+      );
+      const publicsData: PublicationResponse = await result.json();
+      console.log(publicsData.results);
+      setPublicationsInfo(publicsData);
+    } catch (error) {
+      // Handle the error if needed
+    }
+  };
+
+  useEffect(() => {
+    getPublics();
+  }, []);
+
+  return (
+    <>
+      <div>
+        {publicationsInfo &&
+          publicationsInfo.results.map((publication) => (
+            <PublicItem
+              key={uuidv4()}
+              title={publication.citation.title}
+              authors={publication.citation.authors}
+              categories={publication.references[0].sourceCategories}
+              citied={publication.references[0].referencePositions}
+              source={publication.references[0].source.name}
+            />
+          ))}
+      </div>
+    </>
+  );
+};
+
+export default Publics;

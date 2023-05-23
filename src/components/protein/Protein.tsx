@@ -6,8 +6,10 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import Feature from "./feature/Feature";
 import Details from "./details/Details";
+import Feature from "./feature/Feature";
+import Publics from "./publications/Publics";
+
 import { Typography } from "@mui/material";
 import { useAppDispatch } from "../../hooks/typedReduxHooks/typedReduxHooks";
 import "./Protein.css";
@@ -20,16 +22,6 @@ interface ProteinData {
   genes: [{ geneName: { value: string } }];
   geneType: string;
 }
-
-const Publications = () => {
-  const { proteinId } = useParams();
-
-  return (
-    <div>
-      <h1>Publications for Protein {proteinId}</h1>
-    </div>
-  );
-};
 
 const Protein = () => {
   const { proteinId } = useParams();
@@ -129,7 +121,7 @@ const Protein = () => {
       <Routes>
         <Route path="details" element={<Details />} />
         <Route path="feature" element={<Feature />} />
-        <Route path="publications" element={<Publications />} />
+        <Route path="publications" element={<Publics />} />
       </Routes>
     </div>
   );
