@@ -1,9 +1,9 @@
 import { useRef } from "react";
-import { Button, Typography } from "@mui/material";
+import { Button, IconButton, Typography } from "@mui/material";
 import useCopyToClipboard from "../../../hooks/copyToClipboard/useCopyToClipboard";
-import "./Details.css";
 import { useAppSelector } from "../../../hooks/typedReduxHooks/typedReduxHooks";
-
+import copyIcon from "../../../assets/copy-Icon.svg";
+import "./Details.css";
 const Details = () => {
   const sequenceRef = useRef<HTMLDivElement>(null);
   const [_, copyToClipboard] = useCopyToClipboard();
@@ -55,7 +55,13 @@ const Details = () => {
           </div>
         </div>
         <div className="sequence-container">
-          <Button onClick={copySequence}>Copy</Button>
+          {/* <Button onClick={copySequence}>Copy</Button> */}
+          <IconButton
+            onClick={copySequence}
+            sx={{ borderRadius: "8px", marginBottom: "8px" }}
+          >
+            <img src={copyIcon} alt="copy Icon" />
+          </IconButton>
           <Typography
             ref={sequenceRef}
             sx={{
