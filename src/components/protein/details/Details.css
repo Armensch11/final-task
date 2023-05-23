@@ -15,3 +15,10 @@
   align-items: flex-start;
   row-gap: 24px;
 }
+.sequence-container {
+  word-break: break-all;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}

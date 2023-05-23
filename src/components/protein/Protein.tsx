@@ -9,7 +9,9 @@ import {
 import Feature from "./feature/Feature";
 import Details from "./details/Details";
 import { Typography } from "@mui/material";
+import { useAppDispatch } from "../../hooks/typedReduxHooks/typedReduxHooks";
 import "./Protein.css";
+import { setProteinInfo } from "../../reducers/proteinSlice";
 
 interface ProteinData {
   uniProtkbId: string;
@@ -32,6 +34,7 @@ const Publications = () => {
 const Protein = () => {
   const { proteinId } = useParams();
   const [protein, setProtein] = useState<ProteinData | null>(null);
+  const dispatch = useAppDispatch();
 
   const getProteinData = async () => {
     try {
@@ -39,8 +42,20 @@ const Protein = () => {
         `https://rest.uniprot.org/uniprotkb/${proteinId}`
       );
       const proteinInfo = await response.json();
+      // console.log(proteinInfo);
       setProtein(proteinInfo);
-      console.log(proteinInfo);
+      const pickProteinData = {
+        primaryAccession: proteinInfo.primaryAccession,
+        lastUpdate: proteinInfo.entryAudit.lastSequenceUpdateDate,
+
+        sequence: {
+          value: proteinInfo.sequence.value,
+          length: proteinInfo.sequence.length,
+          molWeight: proteinInfo.sequence.molWeight,
+          checksum: proteinInfo.sequence.crc64,
+        },
+      };
+      dispatch(setProteinInfo(pickProteinData));
     } catch (error) {
       console.error("Error fetching protein data:", error);
     }
@@ -83,9 +98,15 @@ const Protein = () => {
         </Typography>
       </div>
       <div className="protein-info-main">
-        <RouterLink to={`./details`} className="link">Details</RouterLink>
-        <RouterLink to={`./features`} className="link">Feature Viewer</RouterLink>
-        <RouterLink to={`./publications`} className="link">Publications</RouterLink>
+        <RouterLink to={`./details`} className="link">
+          Details
+        </RouterLink>
+        <RouterLink to={`./features`} className="link">
+          Feature Viewer
+        </RouterLink>
+        <RouterLink to={`./publications`} className="link">
+          Publications
+        </RouterLink>
       </div>
       <Outlet />
       <Routes>
