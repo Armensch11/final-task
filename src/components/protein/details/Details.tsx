@@ -1,18 +1,21 @@
-import { useRef } from "react";
-import { Button, IconButton, Typography } from "@mui/material";
+import { useRef, useState } from "react";
+import { Alert, IconButton, Snackbar, Typography } from "@mui/material";
 import useCopyToClipboard from "../../../hooks/copyToClipboard/useCopyToClipboard";
 import { useAppSelector } from "../../../hooks/typedReduxHooks/typedReduxHooks";
 import copyIcon from "../../../assets/copy-Icon.svg";
 import "./Details.css";
+
 const Details = () => {
   const sequenceRef = useRef<HTMLDivElement>(null);
   const [_, copyToClipboard] = useCopyToClipboard();
   const proteinData = useAppSelector((state) => state.proteinState);
+  const [open, setOpen] = useState<boolean>(false);
 
   const copySequence = () => {
     if (sequenceRef.current) {
       const sequenceText = sequenceRef.current.innerText;
       copyToClipboard(sequenceText);
+      setOpen(!!sequenceText);
     }
   };
 
@@ -55,7 +58,6 @@ const Details = () => {
           </div>
         </div>
         <div className="sequence-container">
-          {/* <Button onClick={copySequence}>Copy</Button> */}
           <IconButton
             onClick={copySequence}
             sx={{ borderRadius: "8px", marginBottom: "8px" }}
@@ -75,6 +77,18 @@ const Details = () => {
           </Typography>
         </div>
       </div>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={open}
+        onClose={() => {
+          setOpen(false);
+        }}
+        autoHideDuration={1500}
+      >
+        <Alert severity="success" sx={{ width: "100%" }}>
+          copied!
+        </Alert>
+      </Snackbar>
     </>
   );
 };
