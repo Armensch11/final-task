@@ -3,6 +3,10 @@ import { useParams } from "react-router-dom";
 import PublicItem from "../publications/publicItem/publicItem";
 import { v4 as uuidv4 } from "uuid";
 
+type Link = {
+  database: string;
+  id: string;
+};
 interface PublicationResponse {
   results: PublicationInfo[];
 }
@@ -15,8 +19,13 @@ interface Reference {
 interface PublicationInfo {
   citation: {
     authors: string[];
-    citationCrossReference: string[];
+    citationCrossReferences: Link[];
     title: string;
+    journal: string;
+    volume: string;
+    firstPage: string;
+    lastPage: string;
+    publicationDate: string;
   };
   references: Reference[];
 }
@@ -32,7 +41,7 @@ const Publics = () => {
         `https://rest.uniprot.org/uniprotkb/${entry}/publications`
       );
       const publicsData: PublicationResponse = await result.json();
-      console.log(publicsData.results);
+
       setPublicationsInfo(publicsData);
     } catch (error) {
       // Handle the error if needed
@@ -55,6 +64,8 @@ const Publics = () => {
               categories={publication.references[0].sourceCategories}
               citied={publication.references[0].referencePositions}
               source={publication.references[0].source.name}
+              links={publication.citation.citationCrossReferences}
+              link3Title={`${publication.citation.journal} ${publication.citation.volume}:${publication.citation.firstPage}-${publication.citation.lastPage} (${publication.citation.publicationDate})`}
             />
           ))}
       </div>
