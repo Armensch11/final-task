@@ -1,0 +1,13 @@
+.publication-container {
+  background-color: #f5f6f8;
+  border-radius: 12px;
+  padding: 14px 24px;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  justify-content: center;
+  align-items: flex-start;
+
+  color: #6c6c6c;
+}
