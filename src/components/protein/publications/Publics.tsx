@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import PublicItem from "../publications/publicItem/publicItem";
+import PublicItem from "../publications/publicItem/PublicItem";
 import { v4 as uuidv4 } from "uuid";
 
 type Link = {
