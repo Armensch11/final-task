@@ -1,0 +1,9 @@
+.notFound-container {
+  height: 124px;
+  margin: calc((100vh - 2 * 124px) / 2) auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  row-gap: 8px;
+}

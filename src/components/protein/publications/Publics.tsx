@@ -44,7 +44,7 @@ const Publics = () => {
 
       setPublicationsInfo(publicsData);
     } catch (error) {
-      // Handle the error if needed
+      console.error(error);
     }
   };
 
@@ -65,7 +65,23 @@ const Publics = () => {
               citied={publication.references[0].referencePositions}
               source={publication.references[0].source.name}
               links={publication.citation.citationCrossReferences}
-              link3Title={`${publication.citation.journal} ${publication.citation.volume}:${publication.citation.firstPage}-${publication.citation.lastPage} (${publication.citation.publicationDate})`}
+              link3Title={`${
+                publication.citation.journal ? publication.citation.journal : ""
+              } ${
+                publication.citation.volume ? publication.citation.volume : ""
+              }:${
+                publication.citation.firstPage
+                  ? publication.citation.firstPage
+                  : ""
+              }-${
+                publication.citation.lastPage
+                  ? publication.citation.lastPage
+                  : ""
+              } (${
+                publication.citation.publicationDate
+                  ? publication.citation.publicationDate
+                  : ""
+              })`}
             />
           ))}
       </div>
