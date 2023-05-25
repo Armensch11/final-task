@@ -51,8 +51,9 @@ const Login = () => {
           email,
           password
         );
+
         const token = await auth.currentUser?.getIdToken(false);
-        console.log(user);
+
         dispatch(logIn({ isLogged: true, email, uid: user.uid }));
         localStorage.setItem(
           "userData",
@@ -76,6 +77,15 @@ const Login = () => {
     setIsDisabled(!!emailError || !!passwordError || !email || !password);
   }, [emailError, passwordError, email, password]);
 
+  useEffect(() => {
+    const user = localStorage.getItem("userData");
+
+    if (user) {
+      const userData = JSON.parse(user);
+      dispatch(logIn({ ...userData, isLogged: true }));
+      navigate("/search", { replace: true });
+    }
+  }, []);
   return (
     <>
       <div className="login">

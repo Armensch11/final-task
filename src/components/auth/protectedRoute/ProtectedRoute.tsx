@@ -13,7 +13,7 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({
   if (!isAuth) {
     return <Navigate to="/auth/login" replace />;
   }
-  return <UserLayout children={children}></UserLayout>;
+  return <UserLayout>{children}</UserLayout>;
 };
 
 export default ProtectedRoute;

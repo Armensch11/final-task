@@ -1,0 +1,24 @@
+.details-container {
+  margin-top: 24px;
+}
+.desc-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  column-gap: 88px;
+}
+.desc__left .desc__right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  row-gap: 24px;
+}
+.sequence-container {
+  word-break: break-all;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}

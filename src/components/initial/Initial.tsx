@@ -1,7 +1,24 @@
 import { Button, Typography } from "@mui/material";
 import "./Initial.css";
-import { Link } from "react-router-dom";
-const Home = () => {
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useAppDispatch } from "../../hooks/typedReduxHooks/typedReduxHooks";
+import { logIn } from "../../reducers/authSlice";
+
+const Initial = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const user = localStorage.getItem("userData");
+
+    if (user) {
+      const userData = JSON.parse(user);
+      dispatch(logIn({ ...userData, isLogged: true }));
+      navigate("/search", { replace: true });
+    }
+  }, []);
+
   return (
     <>
       <div className="home-content">
@@ -27,4 +44,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Initial;

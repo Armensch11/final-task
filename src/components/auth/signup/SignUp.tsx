@@ -164,6 +164,16 @@ const SignUp = () => {
   useEffect(() => {
     validateEmail();
   }, []);
+  
+  useEffect(() => {
+    const user = localStorage.getItem("userData");
+
+    if (user) {
+      const userData = JSON.parse(user);
+      dispatch(logIn({ ...userData, isLogged: true }));
+      navigate("/search", { replace: true });
+    }
+  }, []);
   return (
     <>
       <div className="signup">

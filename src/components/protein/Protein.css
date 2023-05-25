@@ -7,7 +7,7 @@
   justify-content: flex-start;
   align-items: center;
   column-gap: 24px;
-  margin-bottom: 12px;
+  margin-bottom: 24px;
 }
 .protein-info-subheader {
   display: flex;
@@ -15,4 +15,23 @@
   row-gap: 4px;
   justify-content: space-between;
   align-items: flex-start;
+}
+.protein-info-main {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: row;
+  column-gap: 24px;
+  justify-content: flex-start;
+  align-items: center;
+}
+.link {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #9f9f9f;
+}
+.active {
+  color: blue;
+  text-decoration: underline;
 }
