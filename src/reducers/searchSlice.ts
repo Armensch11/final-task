@@ -1,13 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 interface SearchState {
-  data: any[]; // Placeholder for the fetched data
+  data: any[]; 
+  searchTerm: string;
   isLoading: boolean;
   error: string | null;
 }
 
 const initialState: SearchState = {
   data: [],
+  searchTerm:"",
   isLoading: false,
   error: null,
 };
@@ -35,12 +37,14 @@ const searchSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchData.pending, (state) => {
+        
         state.isLoading = true;
         state.error = null;
       })
       .addCase(fetchData.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload;
+        state.searchTerm = action.meta.arg;
       })
       .addCase(fetchData.rejected, (state, action) => {
         state.isLoading = false;
