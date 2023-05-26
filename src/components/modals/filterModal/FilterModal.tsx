@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import "./FilterModal.css";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { fetchFilterOptions } from "../../../utils/fetchFilterOptions";
 
 interface Option {
@@ -19,23 +19,40 @@ interface Option {
 }
 
 const FilterModal = ({
-  show,
+  showHideFilter,
   searchTerm,
 }: {
-  show: boolean;
+  showHideFilter: () => void;
   searchTerm: string;
 }) => {
   const [isActive, setIsActive] = useState<boolean>(false);
   const [options, setOptions] = useState<Record<string, Option[]>>();
 
-  const extractOptions = async () => {
-    const optionsData = await fetchFilterOptions(searchTerm);
-    setOptions(optionsData);
+  const [gene, setGene] = useState<string>("");
+  const [organismName, setOrganismName] = useState<string>("");
+  const [annotationScore, setAnnotationScore] = useState<string>("");
+  const [proteinWith, setProteinWith] = useState<string>("");
+  const [fromValue, setFromValue] = useState("401");
+  const [toValue, setToValue] = useState("600");
+
+  const filterValues = {
+    gene,
+    model_organism: organismName,
+    length: `[${fromValue} TO ${toValue}]`,
+    annotation_score: annotationScore,
+    proteins_with: proteinWith,
   };
+
+  const extractOptions = useCallback(async () => {
+    if (searchTerm) {
+      const optionsData = await fetchFilterOptions(searchTerm);
+      setOptions(optionsData);
+    }
+  }, [searchTerm]);
 
   useEffect(() => {
     extractOptions();
-  }, []);
+  }, [searchTerm, extractOptions]);
 
   return (
     <>
@@ -53,6 +70,10 @@ const FilterModal = ({
               sx={{
                 bgcolor: "#F5F5F5",
               }}
+              value={gene}
+              onChange={(e) => {
+                setGene(e.target.value);
+              }}
             >
               {" "}
             </TextField>
@@ -61,7 +82,10 @@ const FilterModal = ({
             <FormControl fullWidth>
               <Typography sx={{ fontWeight: "bold" }}>Organism</Typography>
               <Select
-                // onChange={handleChange}
+                value={organismName}
+                onChange={(e) => {
+                  setOrganismName(e.target.value);
+                }}
                 sx={{ bgcolor: "#F5F5F5" }}
               >
                 {options?.organism.map((option) => (
@@ -81,11 +105,35 @@ const FilterModal = ({
               <TextField
                 label="From"
                 sx={{ width: "35%", bgcolor: "#F5F5F5" }}
+                value={fromValue}
+                onChange={(e) => {
+                  setFromValue(e.target.value);
+                }}
+                onBlur={() => {
+                  if (+fromValue < 401) {
+                    setFromValue("401");
+                  }
+                  if (+toValue <= +fromValue) {
+                    setFromValue((+toValue - 1).toString());
+                  }
+                }}
               ></TextField>
               <div className="divider" />
               <TextField
                 label="To"
                 sx={{ width: "35%", bgcolor: "#F5F5F5" }}
+                value={toValue}
+                onChange={(e) => {
+                  setToValue(e.target.value);
+                }}
+                onBlur={() => {
+                  if (+toValue > 600) {
+                    setToValue("600");
+                  }
+                  if (+toValue <= +fromValue) {
+                    setToValue((+fromValue + 1).toString());
+                  }
+                }}
               ></TextField>
             </Stack>
           </Box>
@@ -95,8 +143,10 @@ const FilterModal = ({
                 Annotation score
               </Typography>
               <Select
-                value={"5"}
-                // onChange={handleChange}
+                value={annotationScore}
+                onChange={(e) => {
+                  setAnnotationScore(e.target.value);
+                }}
                 sx={{ bgcolor: "#F5F5F5" }}
               >
                 {options?.annotation.map((option) => (
@@ -114,8 +164,10 @@ const FilterModal = ({
             <FormControl fullWidth>
               <Typography sx={{ fontWeight: "bold" }}>Protein with</Typography>
               <Select
-                value={"5"}
-                // onChange={handleChange}
+                value={proteinWith}
+                onChange={(e) => {
+                  setProteinWith(e.target.value);
+                }}
                 sx={{ bgcolor: "#F5F5F5" }}
               >
                 {options?.protein.map((option) => (
@@ -130,10 +182,18 @@ const FilterModal = ({
             </FormControl>
           </Box>
           <Stack direction="row" spacing={2} justifyContent="space-between">
-            <Button sx={{ width: "50%" }}>Cancel</Button>
+            <Button
+              onClick={(e) => {
+                e.preventDefault(), showHideFilter();
+              }}
+              sx={{ width: "50%" }}
+            >
+              Cancel
+            </Button>
             <Button
               sx={{ width: "50%", bgcolor: "rgba(60, 134, 244, 0.2)" }}
-              disabled={!isActive}
+              disabled={isActive}
+              onClick={() => console.log(filterValues)}
             >
               Apply Filters
             </Button>

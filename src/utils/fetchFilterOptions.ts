@@ -16,7 +16,7 @@ export const fetchFilterOptions = async (query: string) => {
     organism = [...optionsData.facets[0].values];
     protein = [...optionsData.facets[1].values];
     annotation = [...optionsData.facets[2].values];
-    console.log(organism, protein, annotation);
+    // console.log(organism, protein, annotation);
     return { organism, protein, annotation };
   } catch (error: any) {
     throw new Error(error.message);
