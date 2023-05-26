@@ -4,9 +4,15 @@ import { useAppDispatch } from "../../hooks/typedReduxHooks/typedReduxHooks";
 
 import filterIcon from "../../assets/filter-Icon.svg";
 import SearchResult from "../../components/searchResult/SearchResult";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { fetchData } from "../../reducers/searchSlice";
 import { useSearchParams } from "react-router-dom";
+import FilterModal from "../modals/filterModal/FilterModal";
+
+interface Position {
+  left: string;
+  top: string;
+}
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -14,10 +20,33 @@ const Home = () => {
   const [_, setSearchParams] = useSearchParams({
     query: searchTerm,
   });
+  const [show, setShow] = useState(false);
+  const filterButtonRef = useRef<HTMLButtonElement>(null);
+  const [filterButtonPosition, setFilterButtonPosition] = useState<Position>({
+    left: "0",
+    top: "0",
+  });
 
   useEffect(() => {
     dispatch(fetchData("n/a"));
     setSearchParams({ query: "n/a" });
+
+    const handleResize = () => {
+      if (filterButtonRef.current) {
+        const { left, top } = filterButtonRef.current.getBoundingClientRect();
+        setFilterButtonPosition({
+          left: `${left - 335 + 20}px`,
+          top: `${top + 26}px`,
+        });
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   return (
@@ -54,14 +83,37 @@ const Home = () => {
           {"Search"}
         </Button>
         <IconButton
+          ref={filterButtonRef}
+          onClick={() => {
+            setShow((prev) => {
+              return !prev;
+            });
+          }}
           sx={{
             borderRadius: "8px",
             backgroundColor: "rgba(60, 134, 244, 0.2)",
+            position: "relative",
           }}
         >
           <img src={filterIcon} alt="filter icon" />
         </IconButton>
       </div>
+      {/* {show && <FilterModal show={show} />} */}
+      {show && (
+        <div
+          style={
+            filterButtonPosition && {
+              position: "absolute",
+              ...filterButtonPosition,
+              width: "335px",
+              height: "600px",
+              padding: "12px 18px",
+            }
+          }
+        >
+          <FilterModal show={show} searchTerm={searchTerm} />
+        </div>
+      )}
       <SearchResult />
     </>
   );
