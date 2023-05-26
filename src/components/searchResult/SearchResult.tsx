@@ -1,3 +1,4 @@
+
 import SearchTable from "../searchTable/SearchTable";
 import { useAppSelector } from "../../hooks/typedReduxHooks/typedReduxHooks";
 import "./SearchResult.css";

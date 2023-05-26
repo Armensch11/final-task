@@ -5,7 +5,7 @@ import "./PublicItem.css";
 import { PUBL_URL } from "../../../../utils/publivationsURL/publicationsURL";
 import linkIcon from "../../../../assets/external-link-Icon.svg";
 
-type Link = {
+type LinkType = {
   database: string;
   id: string;
 };
@@ -16,7 +16,7 @@ type PublicItemProps = {
   categories?: string[];
   citied?: string[];
   source?: string;
-  links?: Link[];
+  links?: LinkType[];
   link3Title?: string;
 };
 const StyledLink = styled(Link)({
