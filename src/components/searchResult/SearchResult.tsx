@@ -1,9 +1,8 @@
-
 import SearchTable from "../searchTable/SearchTable";
 import { useAppSelector } from "../../hooks/typedReduxHooks/typedReduxHooks";
 import "./SearchResult.css";
 
-const SearchResult = () => {
+const SearchResult:React.FC = () => {
   const result = useAppSelector((state) => {
     return state.searchState.data;
   });

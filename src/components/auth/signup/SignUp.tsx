@@ -79,7 +79,11 @@ const SignUp = () => {
           setEmailError(null);
         }
       } catch (error) {
-        console.error("Error fetching sign-in methods:", error);
+        if (error instanceof Error) {
+          throw new Error(error.message);
+        } else {
+          throw new Error("Unknown error occurred");
+        }
       }
     }
   };
@@ -164,7 +168,7 @@ const SignUp = () => {
   useEffect(() => {
     validateEmail();
   }, []);
-  
+
   useEffect(() => {
     const user = localStorage.getItem("userData");
 

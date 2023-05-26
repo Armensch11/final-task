@@ -184,7 +184,8 @@ const FilterModal = ({
           <Stack direction="row" spacing={2} justifyContent="space-between">
             <Button
               onClick={(e) => {
-                e.preventDefault(); showHideFilter();
+                e.preventDefault();
+                showHideFilter();
               }}
               sx={{ width: "50%" }}
             >

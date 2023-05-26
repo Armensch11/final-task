@@ -67,9 +67,9 @@ const Login = () => {
         errorMessage === "auth/user-not-found"
           ? setEmailError("user does not exist")
           : setPasswordError("check whether password typed correctly");
-        console.error("Authentication error:", errorMessage);
+        throw new Error("Authentication error: " + errorMessage);
       } else {
-        console.error("An error occurred:", error);
+        throw new Error("An error occurred:" + error);
       }
     }
   };

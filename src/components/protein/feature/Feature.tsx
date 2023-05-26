@@ -3,7 +3,6 @@ import ProtvistaUniprot from "protvista-uniprot";
 import "./Feature.css";
 window.customElements.define("protvista-uniprot", ProtvistaUniprot);
 
-
 const Feature = () => {
   const { proteinId } = useParams();
 

@@ -6,7 +6,9 @@ interface Option {
   label?: string;
   count: number;
 }
-export const fetchFilterOptions = async (query: string) => {
+export const fetchFilterOptions = async (
+  query: string
+): Promise<{ organism: Option[]; protein: Option[]; annotation: Option[] }> => {
   let organism: Option[];
   let protein: Option[];
   let annotation: Option[];
@@ -18,7 +20,11 @@ export const fetchFilterOptions = async (query: string) => {
     annotation = [...optionsData.facets[2].values];
     // console.log(organism, protein, annotation);
     return { organism, protein, annotation };
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    } else {
+      throw new Error("Unknown error occurred");
+    }
   }
 };

@@ -27,7 +27,11 @@ const Home = () => {
     top: "0",
   });
 
-const showHideFilter=()=>{setShow((prev)=>{return !prev})}
+  const showHideFilter = () => {
+    setShow((prev) => {
+      return !prev;
+    });
+  };
 
   useEffect(() => {
     dispatch(fetchData("n/a"));
@@ -113,7 +117,10 @@ const showHideFilter=()=>{setShow((prev)=>{return !prev})}
             }
           }
         >
-          <FilterModal showHideFilter={showHideFilter} searchTerm={searchTerm} />
+          <FilterModal
+            showHideFilter={showHideFilter}
+            searchTerm={searchTerm}
+          />
         </div>
       )}
       <SearchResult />
