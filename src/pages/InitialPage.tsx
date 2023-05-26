@@ -1,7 +1,5 @@
 import Initial from "../components/initial/Initial";
-import Layout from "../components/layout/Layout";
-
-
+import Layout from "../components/layouts/initialLayout/Layout";
 
 const InitialPage = () => {
   return (
