@@ -64,6 +64,7 @@ const Home = () => {
   return (
     <>
       <div className="homePage-search">
+        {filters.length && <div className="filter-indicator"></div>}
         <TextField
           type={"search"}
           value={searchTerm}
@@ -83,8 +84,8 @@ const Home = () => {
               setSearchParams({ query: "n/a" });
             } else {
               console.log(filters);
-              dispatch(fetchData(`${(searchTerm)}${filters}`));
-              setSearchParams({ query: `${(searchTerm)}${filters}` });
+              dispatch(fetchData(`${searchTerm}${filters}`));
+              setSearchParams({ query: `${searchTerm}${filters}` });
             }
           }}
           sx={{

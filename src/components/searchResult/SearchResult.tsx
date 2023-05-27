@@ -23,6 +23,7 @@ const SearchResult: React.FC = () => {
       <SearchTable />
     </div>
   );
+
   return <>{result.length ? hasResult : searchPlaceholder}</>;
 };
 
