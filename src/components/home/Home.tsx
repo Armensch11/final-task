@@ -26,12 +26,11 @@ const Home = () => {
     left: "0",
     top: "0",
   });
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
+
   const showHideFilter = () => {
     setShow((prev) => {
       return !prev;
     });
-    setIsFilterModalOpen((prev) => !prev);
   };
 
   useEffect(() => {
@@ -121,7 +120,7 @@ const Home = () => {
           />
         </div>
       )}
-      {isFilterModalOpen && (
+      {show && (
         <div className="filter-modal-overlay" onClick={showHideFilter} />
       )}
       <SearchResult />
