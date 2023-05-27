@@ -21,6 +21,7 @@ interface Position {
 const Home = () => {
   const dispatch = useAppDispatch();
   const [searchTerm, setSearchTerm] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const [_, setSearchParams] = useSearchParams({
     query: searchTerm,
   });
@@ -63,6 +64,9 @@ const Home = () => {
   }, []);
   useEffect(() => {
     dispatch(setFilters({ filters: "" }));
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
   }, []);
   return (
     <>
@@ -71,11 +75,12 @@ const Home = () => {
         <TextField
           type={"search"}
           value={searchTerm}
+          inputRef={searchInputRef}
           onChange={(event) => {
             setSearchTerm(event.target.value);
           }}
           onClick={() => {
-            setSearchTerm("");
+            // setSearchTerm("");
             dispatch(setFilters({ filters: "" }));
           }}
           sx={{ width: "80%", minWidth: "500px" }}

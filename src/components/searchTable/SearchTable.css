@@ -1,8 +1,14 @@
 .table-container {
   width: 100vw;
+  height: 600px;
   padding-left: 130px;
   padding-right: 130px;
+  overflow: scroll;
 }
+/* .results-table {
+  height: 500px;
+  overflow: scroll;
+} */
 .column-name {
   background-color: #f5f5f5;
   border-radius: 4px;

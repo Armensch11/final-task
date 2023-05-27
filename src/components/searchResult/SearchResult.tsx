@@ -18,7 +18,7 @@ const SearchResult: React.FC = () => {
   const hasResult = (
     <div>
       <p style={{ marginLeft: "130px" }}>{`${
-        result.length
+        result?.length
       } Search results found for "${searchTerm.split(" ")[0]}" `}</p>
       <SearchTable />
     </div>

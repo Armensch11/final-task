@@ -24,7 +24,12 @@ export const fetchData = createAsyncThunk(
       );
       if (response.ok) {
         const data = await response.json();
-        const headers = data.headers;
+        const headers = {
+          link: response.headers.get("link"),
+          totalResults: response.headers.get("X-Total-Results"),
+          // Add other headers you want to access
+        };
+
         console.log(headers);
         const result = data.results;
         return result;

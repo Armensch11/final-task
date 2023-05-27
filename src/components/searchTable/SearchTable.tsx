@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 import SortIcon from "../../assets/sort-Icon.svg";
 import { Dna } from "react-loader-spinner";
 import "./SearchTable.css";
+import { useEffect, useRef } from "react";
 
 type TableData = {
   entry: string;
@@ -33,6 +34,34 @@ const SearchTable = () => {
     return state.searchState.data;
   });
   const isLoading = useAppSelector((state) => state.searchState.isLoading);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    const container = containerRef.current;
+    console.log(container);
+    if (container) {
+      const { scrollTop, clientHeight, scrollHeight } = container;
+      console.log(
+        `scrolltop is ${scrollTop},clientHeight is ${clientHeight}, scrollHeight is ${scrollHeight}`
+      );
+      if (scrollTop + clientHeight >= scrollHeight) {
+        console.log("got to the bottom");
+      }
+    }
+  };
+  useEffect(() => {
+    const container = containerRef.current;
+    console.log(container);
+    if (container) {
+      container.addEventListener("wheel", handleScroll);
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener("wheel", handleScroll);
+      }
+    };
+  }, []);
   return (
     <>
       {isLoading ? (
@@ -49,7 +78,7 @@ const SearchTable = () => {
           }
         </div>
       ) : (
-        <div className="table-container">
+        <div className="table-container" ref={containerRef}>
           <Table>
             <TableHead>
               <TableRow className="table-row">
@@ -104,7 +133,8 @@ const SearchTable = () => {
                 </TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
+            {/* <div style={{ overflow: "auto" }} ref={containerRef}> */}
+            <TableBody className="results-table">
               {searchData.map((item, index) => (
                 <TableRow key={uuidv4()} className="table-row">
                   <TableCell className=" index">{index + 1}</TableCell>
@@ -136,6 +166,7 @@ const SearchTable = () => {
                 </TableRow>
               ))}
             </TableBody>
+            {/* </div> */}
           </Table>
         </div>
       )}

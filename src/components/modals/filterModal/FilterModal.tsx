@@ -19,7 +19,14 @@ interface Option {
   label?: string;
   count: number;
 }
-
+interface IsChanged {
+  gene: boolean;
+  organismName: boolean;
+  annotationScore: boolean;
+  proteinWith: boolean;
+  fromValue: boolean;
+  toValue: boolean;
+}
 const FilterModal = ({
   showHideFilter,
   searchTerm,
@@ -36,6 +43,8 @@ const FilterModal = ({
   const [proteinWith, setProteinWith] = useState<string>("");
   const [fromValue, setFromValue] = useState("401");
   const [toValue, setToValue] = useState("600");
+
+  const [isChanged, setIsChanged] = useState<boolean>();
 
   const dispatch = useAppDispatch();
 
