@@ -38,7 +38,10 @@ const FilterModal = ({
   const filterValues = {
     gene,
     model_organism: organismName,
-    length: `[${fromValue} TO ${toValue}]`,
+    length:
+      fromValue !== "401" || toValue !== "600"
+        ? `[${fromValue} TO ${toValue}]`
+        : "",
     annotation_score: annotationScore,
     proteins_with: proteinWith,
   };
@@ -194,7 +197,17 @@ const FilterModal = ({
             <Button
               sx={{ width: "50%", bgcolor: "rgba(60, 134, 244, 0.2)" }}
               disabled={isActive}
-              onClick={() => console.log(filterValues)}
+              onClick={() =>
+                console.log(
+                  Object.entries(filterValues).reduce((acc, item) => {
+                    if (item[1] !== "") {
+                      return acc + ` AND (${item[0]}:${item[1]})`;
+                    } else {
+                      return acc + "";
+                    }
+                  }, "")
+                )
+              }
             >
               Apply Filters
             </Button>

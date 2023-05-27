@@ -26,11 +26,12 @@ const Home = () => {
     left: "0",
     top: "0",
   });
-
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
   const showHideFilter = () => {
     setShow((prev) => {
       return !prev;
     });
+    setIsFilterModalOpen((prev) => !prev);
   };
 
   useEffect(() => {
@@ -90,11 +91,7 @@ const Home = () => {
         </Button>
         <IconButton
           ref={filterButtonRef}
-          onClick={() => {
-            setShow((prev) => {
-              return !prev;
-            });
-          }}
+          onClick={showHideFilter}
           sx={{
             borderRadius: "8px",
             backgroundColor: "rgba(60, 134, 244, 0.2)",
@@ -114,6 +111,7 @@ const Home = () => {
               width: "335px",
               height: "600px",
               padding: "12px 18px",
+              zIndex: "999",
             }
           }
         >
@@ -122,6 +120,9 @@ const Home = () => {
             searchTerm={searchTerm}
           />
         </div>
+      )}
+      {isFilterModalOpen && (
+        <div className="filter-modal-overlay" onClick={showHideFilter} />
       )}
       <SearchResult />
     </>
