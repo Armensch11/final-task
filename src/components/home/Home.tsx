@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import { fetchData } from "../../reducers/searchSlice";
 import { useSearchParams } from "react-router-dom";
 import FilterModal from "../modals/filterModal/FilterModal";
+import { setFilters } from "../../reducers/searchSlice";
 
 interface Position {
   left: string;
@@ -60,11 +61,13 @@ const Home = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
+  useEffect(() => {
+    dispatch(setFilters({ filters: "" }));
+  }, []);
   return (
     <>
       <div className="homePage-search">
-        {filters.length && <div className="filter-indicator"></div>}
+        {!!filters.length && <div className="filter-indicator"></div>}
         <TextField
           type={"search"}
           value={searchTerm}
@@ -73,6 +76,7 @@ const Home = () => {
           }}
           onClick={() => {
             setSearchTerm("");
+            dispatch(setFilters({ filters: "" }));
           }}
           sx={{ width: "80%", minWidth: "500px" }}
           InputProps={{ sx: { height: 40 } }}
