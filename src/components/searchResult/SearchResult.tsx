@@ -2,7 +2,7 @@ import SearchTable from "../searchTable/SearchTable";
 import { useAppSelector } from "../../hooks/typedReduxHooks/typedReduxHooks";
 import "./SearchResult.css";
 
-const SearchResult:React.FC = () => {
+const SearchResult: React.FC = () => {
   const result = useAppSelector((state) => {
     return state.searchState.data;
   });
@@ -17,9 +17,9 @@ const SearchResult:React.FC = () => {
   );
   const hasResult = (
     <div>
-      <p
-        style={{ marginLeft: "130px" }}
-      >{`${result.length} Search results found for "${searchTerm}" `}</p>
+      <p style={{ marginLeft: "130px" }}>{`${
+        result.length
+      } Search results found for "${searchTerm.split(" ")[0]}" `}</p>
       <SearchTable />
     </div>
   );

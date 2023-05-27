@@ -1,6 +1,9 @@
 import { Button, IconButton, TextField } from "@mui/material";
 import "./Home.css";
-import { useAppDispatch } from "../../hooks/typedReduxHooks/typedReduxHooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../hooks/typedReduxHooks/typedReduxHooks";
 
 import filterIcon from "../../assets/filter-Icon.svg";
 import SearchResult from "../../components/searchResult/SearchResult";
@@ -20,7 +23,10 @@ const Home = () => {
   const [_, setSearchParams] = useSearchParams({
     query: searchTerm,
   });
+  const filters = useAppSelector((state) => state.searchState.filters);
+
   const [show, setShow] = useState(false);
+
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const [filterButtonPosition, setFilterButtonPosition] = useState<Position>({
     left: "0",
@@ -76,8 +82,9 @@ const Home = () => {
               dispatch(fetchData("n/a"));
               setSearchParams({ query: "n/a" });
             } else {
-              dispatch(fetchData(searchTerm));
-              setSearchParams({ query: searchTerm });
+              console.log(filters);
+              dispatch(fetchData(`${(searchTerm)}${filters}`));
+              setSearchParams({ query: `${(searchTerm)}${filters}` });
             }
           }}
           sx={{
@@ -100,7 +107,7 @@ const Home = () => {
           <img src={filterIcon} alt="filter icon" />
         </IconButton>
       </div>
-      {/* {show && <FilterModal show={show} />} */}
+
       {show && (
         <div
           style={

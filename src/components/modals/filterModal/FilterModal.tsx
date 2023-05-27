@@ -11,6 +11,8 @@ import {
 import "./FilterModal.css";
 import { useCallback, useEffect, useState } from "react";
 import { fetchFilterOptions } from "../../../utils/fetchFilterOptions";
+import { useAppDispatch } from "../../../hooks/typedReduxHooks/typedReduxHooks";
+import { setFilters } from "../../../reducers/searchSlice";
 
 interface Option {
   value: string;
@@ -34,6 +36,8 @@ const FilterModal = ({
   const [proteinWith, setProteinWith] = useState<string>("");
   const [fromValue, setFromValue] = useState("401");
   const [toValue, setToValue] = useState("600");
+
+  const dispatch = useAppDispatch();
 
   const filterValues = {
     gene,
@@ -197,17 +201,21 @@ const FilterModal = ({
             <Button
               sx={{ width: "50%", bgcolor: "rgba(60, 134, 244, 0.2)" }}
               disabled={isActive}
-              onClick={() =>
-                console.log(
-                  Object.entries(filterValues).reduce((acc, item) => {
+              onClick={() => {
+                const filters = Object.entries(filterValues).reduce(
+                  (acc, item) => {
                     if (item[1] !== "") {
                       return acc + ` AND (${item[0]}:${item[1]})`;
                     } else {
                       return acc + "";
                     }
-                  }, "")
-                )
-              }
+                  },
+                  ""
+                );
+                if (filters.length) {
+                  dispatch(setFilters({ filters }));
+                }
+              }}
             >
               Apply Filters
             </Button>

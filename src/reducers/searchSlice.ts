@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 interface SearchState {
   data: any[];
   searchTerm: string;
+  filters: string;
   isLoading: boolean;
   error: string | null;
 }
@@ -10,13 +11,15 @@ interface SearchState {
 const initialState: SearchState = {
   data: [],
   searchTerm: "",
+  filters: "",
   isLoading: false,
   error: null,
 };
 export const fetchData = createAsyncThunk(
   "search/fetchData",
-  async (searchQuery: string) => {
+  async (searchQuery: string, ) => {
     try {
+     
       const response = await fetch(
         `https://rest.uniprot.org/uniprotkb/search?fields=accession,id,gene_names,organism_name,length,cc_subcellular_location&query=${searchQuery}`
       );
@@ -33,7 +36,12 @@ export const fetchData = createAsyncThunk(
 const searchSlice = createSlice({
   name: "search",
   initialState,
-  reducers: {},
+  reducers: {
+    setFilters: (state, action) => {
+      state.filters = action.payload.filters;
+      console.log(state.filters);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchData.pending, (state) => {
@@ -51,5 +59,5 @@ const searchSlice = createSlice({
       });
   },
 });
-
+export const { setFilters } = searchSlice.actions;
 export const { reducer: searchReducer } = searchSlice;
