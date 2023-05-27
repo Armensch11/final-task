@@ -215,6 +215,7 @@ const FilterModal = ({
                 if (filters.length) {
                   dispatch(setFilters({ filters }));
                 }
+                showHideFilter();
               }}
             >
               Apply Filters

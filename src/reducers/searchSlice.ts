@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
+import { UNIPROT_URL } from "../utils/uniprotURL/uniprotURL";
 interface SearchState {
   data: any[];
   searchTerm: string;
@@ -12,22 +12,23 @@ const initialState: SearchState = {
   data: [],
   searchTerm: "",
   filters: "",
-  isLoading: false,
+  isLoading: true,
   error: null,
 };
 export const fetchData = createAsyncThunk(
   "search/fetchData",
-  async (searchQuery: string, ) => {
+  async (searchQuery: string) => {
     try {
-     
       const response = await fetch(
-        `https://rest.uniprot.org/uniprotkb/search?fields=accession,id,gene_names,organism_name,length,cc_subcellular_location&query=${searchQuery}`
+        `${UNIPROT_URL.BASE}search?fields=${UNIPROT_URL.FIELDS}&query=(${searchQuery})`
       );
-      const data = await response.json();
-
-      const result = data.results;
-      // console.log(result);
-      return result;
+      if (response.ok) {
+        const data = await response.json();
+        const headers = data.headers;
+        console.log(headers);
+        const result = data.results;
+        return result;
+      }
     } catch (error) {
       throw new Error("Failed to fetch data");
     }
@@ -39,7 +40,6 @@ const searchSlice = createSlice({
   reducers: {
     setFilters: (state, action) => {
       state.filters = action.payload.filters;
-      console.log(state.filters);
     },
   },
   extraReducers: (builder) => {
