@@ -5,4 +5,3 @@ export enum UNIPROT_URL {
 }
 export const FACETS_URL =
   UNIPROT_URL.BASE + "search?facets=" + UNIPROT_URL.FACETS + "&query=";
-console.log(FACET_URL);

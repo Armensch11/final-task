@@ -1,11 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { UNIPROT_URL } from "../utils/uniprotURL/uniprotURL";
+import { SearchResponse, ResultsItem, Headers } from "../api/interfaces";
+import { extractNextLink } from "../utils/extractNextLInk";
 interface SearchState {
-  data: any[];
+  data: ResultsItem[];
   searchTerm: string;
   filters: string;
-  totalResults: string;
-  nextLink: string;
+  totalResults: string | null;
+  nextLink: string | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -19,23 +21,31 @@ const initialState: SearchState = {
   isLoading: true,
   error: null,
 };
-export const fetchData = createAsyncThunk(
+interface SearchResult {
+  result: ResultsItem[];
+  headers: Headers;
+}
+export const fetchData = createAsyncThunk<SearchResult, string>(
   "search/fetchData",
-  async (searchQuery: string) => {
+  async (searchQuery: string, { getState }) => {
+    const { nextLink } = getState().searchState;
+    console.log(nextLink);
     try {
       const response = await fetch(
-        `${UNIPROT_URL.BASE}search?fields=${UNIPROT_URL.FIELDS}&query=(${searchQuery})`
+        nextLink
+          ? nextLink
+          : `${UNIPROT_URL.BASE}search?fields=${UNIPROT_URL.FIELDS}&query=(${searchQuery})`
       );
       if (response.ok) {
-        const data = await response.json();
-        const headers = {
+        const data: SearchResponse = await response.json();
+        console.log(data);
+        const headers: Headers = {
           link: response.headers.get("link"),
           totalResults: response.headers.get("X-Total-Results"),
-          // Add other headers you want to access
         };
 
         console.log(headers);
-        const result = data.results;
+        const result = { result: data.results, headers };
         return result;
       }
     } catch (error) {
@@ -59,8 +69,10 @@ const searchSlice = createSlice({
       })
       .addCase(fetchData.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload;
+        state.data = [...state.data, ...action.payload.result];
         state.searchTerm = action.meta.arg;
+        state.totalResults = action.payload.headers.totalResults;
+        state.nextLink = extractNextLink(action.payload.headers.link);
       })
       .addCase(fetchData.rejected, (state, action) => {
         state.isLoading = false;
