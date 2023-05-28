@@ -210,6 +210,7 @@ const SignUp = () => {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
+                  tabIndex={-1}
                   aria-label="toggle password visibility"
                   onClick={() => showPasswordOnClick(setShowPassword)}
                   onMouseDown={mouseDownShowPassword}
@@ -234,6 +235,7 @@ const SignUp = () => {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
+                  tabIndex={-1}
                   aria-label="toggle password visibility"
                   onClick={() => showPasswordOnClick(setShowPasswordRepeat)}
                   onMouseDown={mouseDownShowPassword}
