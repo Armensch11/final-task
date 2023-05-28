@@ -13,20 +13,13 @@ import { useCallback, useEffect, useState } from "react";
 import { fetchFilterOptions } from "../../../utils/fetchFilterOptions";
 import { useAppDispatch } from "../../../hooks/typedReduxHooks/typedReduxHooks";
 import { setFilters } from "../../../reducers/searchSlice";
-
+// import { setApplyButtonStatus } from "../../../utils/validations";
 interface Option {
   value: string;
   label?: string;
   count: number;
 }
-interface IsChanged {
-  gene: boolean;
-  organismName: boolean;
-  annotationScore: boolean;
-  proteinWith: boolean;
-  fromValue: boolean;
-  toValue: boolean;
-}
+
 const FilterModal = ({
   showHideFilter,
   searchTerm,
@@ -34,17 +27,20 @@ const FilterModal = ({
   showHideFilter: () => void;
   searchTerm: string;
 }) => {
-  const [isActive, setIsActive] = useState<boolean>(false);
   const [options, setOptions] = useState<Record<string, Option[]>>();
 
   const [gene, setGene] = useState<string>("");
   const [organismName, setOrganismName] = useState<string>("");
   const [annotationScore, setAnnotationScore] = useState<string>("");
   const [proteinWith, setProteinWith] = useState<string>("");
-  const [fromValue, setFromValue] = useState("401");
-  const [toValue, setToValue] = useState("600");
-
-  const [isChanged, setIsChanged] = useState<boolean>();
+  const [fromValue, setFromValue] = useState("");
+  const [toValue, setToValue] = useState("");
+  const isActive =
+    gene ||
+    organismName ||
+    annotationScore ||
+    proteinWith ||
+    (fromValue && toValue);
 
   const dispatch = useAppDispatch();
 
@@ -52,7 +48,7 @@ const FilterModal = ({
     gene,
     model_organism: organismName,
     length:
-      fromValue !== "401" || toValue !== "600"
+      +fromValue >= 401 && +toValue <= 600
         ? `[${fromValue} TO ${toValue}]`
         : "",
     annotation_score: annotationScore,
@@ -90,9 +86,7 @@ const FilterModal = ({
               onChange={(e) => {
                 setGene(e.target.value);
               }}
-            >
-              {" "}
-            </TextField>
+            ></TextField>
           </Box>
           <Box>
             <FormControl fullWidth>
@@ -122,6 +116,7 @@ const FilterModal = ({
                 label="From"
                 sx={{ width: "35%", bgcolor: "#F5F5F5" }}
                 value={fromValue}
+                placeholder="401"
                 onChange={(e) => {
                   setFromValue(e.target.value);
                 }}
@@ -129,7 +124,7 @@ const FilterModal = ({
                   if (+fromValue < 401) {
                     setFromValue("401");
                   }
-                  if (+toValue <= +fromValue) {
+                  if (toValue && +toValue <= +fromValue) {
                     setFromValue((+toValue - 1).toString());
                   }
                 }}
@@ -139,6 +134,7 @@ const FilterModal = ({
                 label="To"
                 sx={{ width: "35%", bgcolor: "#F5F5F5" }}
                 value={toValue}
+                placeholder="600"
                 onChange={(e) => {
                   setToValue(e.target.value);
                 }}
@@ -146,7 +142,7 @@ const FilterModal = ({
                   if (+toValue > 600) {
                     setToValue("600");
                   }
-                  if (+toValue <= +fromValue) {
+                  if (fromValue && +toValue <= +fromValue) {
                     setToValue((+fromValue + 1).toString());
                   }
                 }}
@@ -209,7 +205,7 @@ const FilterModal = ({
             </Button>
             <Button
               sx={{ width: "50%", bgcolor: "rgba(60, 134, 244, 0.2)" }}
-              disabled={isActive}
+              disabled={!isActive}
               onClick={() => {
                 const filters = Object.entries(filterValues).reduce(
                   (acc, item) => {

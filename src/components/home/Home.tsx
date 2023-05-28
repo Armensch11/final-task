@@ -7,7 +7,7 @@ import {
 
 import filterIcon from "../../assets/filter-Icon.svg";
 import SearchResult from "../../components/searchResult/SearchResult";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, KeyboardEvent } from "react";
 import { fetchData } from "../../reducers/searchSlice";
 import { useSearchParams } from "react-router-dom";
 import FilterModal from "../modals/filterModal/FilterModal";
@@ -40,10 +40,18 @@ const Home = () => {
       return !prev;
     });
   };
+  const onPressEnter = (event: KeyboardEvent<HTMLInputElement>): void => {
+    if (event.key === "Enter") {
+      dispatch(fetchData(`${encodeURIComponent(searchTerm)}${filters}`));
+      setSearchParams({
+        query: `${encodeURIComponent(searchTerm)}${filters}`,
+      });
+    }
+  };
 
   useEffect(() => {
-    dispatch(fetchData("n/a"));
-    setSearchParams({ query: "n/a" });
+    // dispatch(fetchData("n/a"));
+    // setSearchParams({ query: "n/a" });
 
     const handleResize = () => {
       if (filterButtonRef.current) {
@@ -76,14 +84,14 @@ const Home = () => {
           type={"search"}
           value={searchTerm}
           inputRef={searchInputRef}
+          onKeyDown={onPressEnter}
           onChange={(event) => {
             setSearchTerm(event.target.value);
           }}
           onClick={() => {
-            // setSearchTerm("");
             dispatch(setFilters({ filters: "" }));
           }}
-          sx={{ width: "80%", minWidth: "500px" }}
+          sx={{ width: "80%", minWidth: "300px" }}
           InputProps={{ sx: { height: 40 } }}
         ></TextField>
         <Button
@@ -93,8 +101,12 @@ const Home = () => {
               setSearchParams({ query: "n/a" });
             } else {
               console.log(filters);
-              dispatch(fetchData(`${searchTerm}${filters}`));
-              setSearchParams({ query: `${searchTerm}${filters}` });
+              dispatch(
+                fetchData(`${encodeURIComponent(searchTerm)}${filters}`)
+              );
+              setSearchParams({
+                query: `${encodeURIComponent(searchTerm)}${filters}`,
+              });
             }
           }}
           sx={{

@@ -14,7 +14,7 @@ import { Typography } from "@mui/material";
 import { useAppDispatch } from "../../hooks/typedReduxHooks/typedReduxHooks";
 import "./Protein.css";
 import { setProteinInfo } from "../../reducers/proteinSlice";
-
+import { UNIPROT_URL } from "../../utils/uniprotURL/uniprotURL";
 interface ProteinData {
   uniProtkbId: string;
   organism: { scientificName: string };
@@ -32,7 +32,7 @@ const Protein = () => {
   const getProteinData = async () => {
     try {
       const response = await fetch(
-        `https://rest.uniprot.org/uniprotkb/${proteinId}`
+        `${UNIPROT_URL.BASE}${proteinId}`
       );
       const proteinInfo = await response.json();
       // console.log(proteinInfo);

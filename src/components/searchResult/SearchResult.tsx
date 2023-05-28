@@ -7,7 +7,10 @@ const SearchResult: React.FC = () => {
     return state.searchState.data;
   });
   const searchTerm = useAppSelector((state) => {
-    return state.searchState.searchTerm;
+  
+    const term = decodeURIComponent(state.searchState.searchTerm);
+  
+    return term;
   });
 
   const searchPlaceholder = (
@@ -17,14 +20,14 @@ const SearchResult: React.FC = () => {
   );
   const hasResult = (
     <div>
-      <p style={{ marginLeft: "130px" }}>{`${
-        result?.length
-      } Search results found for "${searchTerm.split(" ")[0]}" `}</p>
+      <p
+        style={{ marginLeft: "130px" }}
+      >{`${result?.length} Search results found for "${searchTerm}" `}</p>
       <SearchTable />
     </div>
   );
 
-  return <>{result.length ? hasResult : searchPlaceholder}</>;
+  return <>{!!result?.length ? hasResult : searchPlaceholder}</>;
 };
 
 export default SearchResult;
