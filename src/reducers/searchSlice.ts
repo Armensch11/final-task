@@ -28,7 +28,7 @@ interface SearchResult {
 export const fetchData = createAsyncThunk<SearchResult, string>(
   "search/fetchData",
   async (searchQuery: string, { getState }) => {
-    const { nextLink } = getState().searchState;
+    const { nextLink } = getState();
     console.log(nextLink);
     try {
       const response = await fetch(
@@ -72,7 +72,8 @@ const searchSlice = createSlice({
         state.data = [...state.data, ...action.payload.result];
         state.searchTerm = action.meta.arg;
         state.totalResults = action.payload.headers.totalResults;
-        state.nextLink = extractNextLink(action.payload.headers.link);
+        const link = extractNextLink(action.payload.headers.link);
+        state.nextLink = link;
       })
       .addCase(fetchData.rejected, (state, action) => {
         state.isLoading = false;

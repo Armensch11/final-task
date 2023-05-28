@@ -4,12 +4,11 @@ import "./SearchResult.css";
 
 const SearchResult: React.FC = () => {
   const result = useAppSelector((state) => {
-    return state.searchState.data;
+    return state.searchState.totalResults;
   });
   const searchTerm = useAppSelector((state) => {
-  
     const term = decodeURIComponent(state.searchState.searchTerm);
-  
+
     return term;
   });
 
@@ -22,7 +21,7 @@ const SearchResult: React.FC = () => {
     <div>
       <p
         style={{ marginLeft: "130px" }}
-      >{`${result?.length} Search results found for "${searchTerm}" `}</p>
+      >{`${result} Search results found for "${searchTerm}" `}</p>
       <SearchTable />
     </div>
   );

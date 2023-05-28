@@ -8,12 +8,16 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../hooks/typedReduxHooks/typedReduxHooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../hooks/typedReduxHooks/typedReduxHooks";
 import { v4 as uuidv4 } from "uuid";
 import SortIcon from "../../assets/sort-Icon.svg";
 import { Dna } from "react-loader-spinner";
 import "./SearchTable.css";
 import React, { ReactNode, forwardRef, useEffect, useRef } from "react";
+import { fetchData } from "../../reducers/searchSlice";
 
 type TableData = {
   entry: string;
@@ -48,6 +52,8 @@ const SearchTable: React.FC = () => {
   const isLoading = useAppSelector((state) => state.searchState.isLoading);
   const containerRef = useRef<HTMLDivElement>(null);
   const lastElementRef = useRef<HTMLTableRowElement | null>(null);
+  const searchTerm = useAppSelector((state) => state.searchState.searchTerm);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const options = {
@@ -61,6 +67,8 @@ const SearchTable: React.FC = () => {
         if (entry.isIntersecting) {
           // The last element is now visible
           console.log("Last element is visible");
+          console.log(searchTerm);
+          dispatch(fetchData(searchTerm));
         } else {
           // The last element is not visible
           console.log("Last element is not visible");
@@ -80,7 +88,7 @@ const SearchTable: React.FC = () => {
         observer.unobserve(lastElementRef.current);
       }
     };
-  }, []);
+  }, [searchData]);
 
   return (
     <>
