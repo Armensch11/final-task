@@ -1,5 +1,4 @@
-const FACET_URL =
-  "https://rest.uniprot.org/uniprotkb/search?facets=model_organism,proteins_with,annotation_score&query=";
+import { FACETS_URL } from "./uniprotURL/uniprotURL";
 
 interface Option {
   value: string;
@@ -13,7 +12,7 @@ export const fetchFilterOptions = async (
   let protein: Option[];
   let annotation: Option[];
   try {
-    const response = await fetch(`${FACET_URL}(${query})`);
+    const response = await fetch(`${FACETS_URL}(${query})`);
     const optionsData = await response.json();
     organism = [...optionsData.facets[0].values];
     protein = [...optionsData.facets[1].values];

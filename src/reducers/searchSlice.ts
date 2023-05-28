@@ -4,6 +4,8 @@ interface SearchState {
   data: any[];
   searchTerm: string;
   filters: string;
+  totalResults: string;
+  nextLink: string;
   isLoading: boolean;
   error: string | null;
 }
@@ -12,6 +14,8 @@ const initialState: SearchState = {
   data: [],
   searchTerm: "",
   filters: "",
+  totalResults: "",
+  nextLink: "",
   isLoading: true,
   error: null,
 };
