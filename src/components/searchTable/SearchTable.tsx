@@ -53,6 +53,7 @@ const SearchTable: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const lastElementRef = useRef<HTMLTableRowElement | null>(null);
   const searchTerm = useAppSelector((state) => state.searchState.searchTerm);
+  const nextLink = useAppSelector((state) => state.searchState.nextLink);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -68,7 +69,9 @@ const SearchTable: React.FC = () => {
           // The last element is now visible
           console.log("Last element is visible");
           console.log(searchTerm);
-          dispatch(fetchData(searchTerm));
+          if (nextLink) {
+            dispatch(fetchData({ searchQuery: "", nextLink }));
+          }
         } else {
           // The last element is not visible
           console.log("Last element is not visible");

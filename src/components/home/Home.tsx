@@ -8,10 +8,14 @@ import {
 import filterIcon from "../../assets/filter-Icon.svg";
 import SearchResult from "../../components/searchResult/SearchResult";
 import { useEffect, useRef, useState, KeyboardEvent } from "react";
-import { fetchData } from "../../reducers/searchSlice";
+import {
+  fetchData,
+  setFilters,
+  resetPrevResults,
+  setSearchInStore,
+} from "../../reducers/searchSlice";
 import { useSearchParams } from "react-router-dom";
 import FilterModal from "../modals/filterModal/FilterModal";
-import { setFilters } from "../../reducers/searchSlice";
 
 interface Position {
   left: string;
@@ -42,9 +46,15 @@ const Home = () => {
   };
   const onPressEnter = (event: KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === "Enter") {
-      dispatch(fetchData(`${encodeURIComponent(searchTerm)}${filters}`));
+      dispatch(resetPrevResults({ data: [] }));
+      dispatch(setSearchInStore(searchTerm));
+      dispatch(
+        fetchData({
+          searchQuery: encodeURIComponent(`${searchTerm}${filters}`),
+        })
+      );
       setSearchParams({
-        query: `${encodeURIComponent(searchTerm)}${filters}`,
+        query: encodeURIComponent(`${searchTerm}${filters}`),
       });
     }
   };
@@ -91,21 +101,25 @@ const Home = () => {
           onClick={() => {
             dispatch(setFilters({ filters: "" }));
           }}
-          sx={{ width: "80%", minWidth: "300px" }}
+          sx={{ width: "80%", minWidth: "300px", height: "40px" }}
           InputProps={{ sx: { height: 40 } }}
         ></TextField>
         <Button
           onClick={() => {
             if (!searchTerm) {
-              dispatch(fetchData("n/a"));
+              dispatch(fetchData({ searchQuery: "n/a" }));
+              dispatch(setSearchInStore("n/a"));
               setSearchParams({ query: "n/a" });
             } else {
-              console.log(filters);
+              dispatch(resetPrevResults({ data: [] }));
+              dispatch(setSearchInStore(searchTerm));
               dispatch(
-                fetchData(`${encodeURIComponent(searchTerm)}${filters}`)
+                fetchData({
+                  searchQuery: encodeURIComponent(`${searchTerm}${filters}`),
+                })
               );
               setSearchParams({
-                query: `${encodeURIComponent(searchTerm)}${filters}`,
+                query: encodeURIComponent(`${searchTerm}${filters}`),
               });
             }
           }}

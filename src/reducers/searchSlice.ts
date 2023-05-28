@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { UNIPROT_URL } from "../utils/uniprotURL/uniprotURL";
 import { SearchResponse, ResultsItem, Headers } from "../api/interfaces";
-import { extractNextLink } from "../utils/extractNextLInk";
+import { extractNextLink } from "../utils/extractNextLink";
 interface SearchState {
   data: ResultsItem[];
   searchTerm: string;
@@ -25,11 +25,14 @@ interface SearchResult {
   result: ResultsItem[];
   headers: Headers;
 }
-export const fetchData = createAsyncThunk<SearchResult, string>(
+type RequestSearch = {
+  searchQuery: string;
+  nextLink?: string;
+};
+export const fetchData = createAsyncThunk<SearchResult, RequestSearch>(
   "search/fetchData",
-  async (searchQuery: string, { getState }) => {
-    const { nextLink } = getState();
-    console.log(nextLink);
+  // @ts-ignore
+  async ({ searchQuery, nextLink }: RequestSearch) => {
     try {
       const response = await fetch(
         nextLink
@@ -38,13 +41,14 @@ export const fetchData = createAsyncThunk<SearchResult, string>(
       );
       if (response.ok) {
         const data: SearchResponse = await response.json();
-        console.log(data);
+
+        const linkHeader = extractNextLink(response.headers.get("link"));
+
         const headers: Headers = {
-          link: response.headers.get("link"),
+          link: linkHeader ? linkHeader : null,
           totalResults: response.headers.get("X-Total-Results"),
         };
 
-        console.log(headers);
         const result = { result: data.results, headers };
         return result;
       }
@@ -57,8 +61,14 @@ const searchSlice = createSlice({
   name: "search",
   initialState,
   reducers: {
+    setSearchInStore: (state, action) => {
+      state.searchTerm = action.payload;
+    },
     setFilters: (state, action) => {
       state.filters = action.payload.filters;
+    },
+    resetPrevResults: (state,action) => {
+      state.data = action.payload.data;
     },
   },
   extraReducers: (builder) => {
@@ -70,10 +80,9 @@ const searchSlice = createSlice({
       .addCase(fetchData.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = [...state.data, ...action.payload.result];
-        state.searchTerm = action.meta.arg;
+        // state.searchTerm = action.meta.arg.searchQuery;
         state.totalResults = action.payload.headers.totalResults;
-        const link = extractNextLink(action.payload.headers.link);
-        state.nextLink = link;
+        state.nextLink = action.payload.headers.link;
       })
       .addCase(fetchData.rejected, (state, action) => {
         state.isLoading = false;
@@ -81,5 +90,6 @@ const searchSlice = createSlice({
       });
   },
 });
-export const { setFilters } = searchSlice.actions;
+export const { setSearchInStore, setFilters, resetPrevResults } =
+  searchSlice.actions;
 export const { reducer: searchReducer } = searchSlice;
