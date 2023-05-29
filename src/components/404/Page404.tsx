@@ -34,7 +34,7 @@ const Page404 = () => {
         </StyledButton>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Page404;

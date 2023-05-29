@@ -8,7 +8,7 @@
   row-gap: 8px;
   justify-content: center;
   align-items: flex-start;
-
+  height: fit-content;
   color: #6c6c6c;
 }
 .links-container {
@@ -18,4 +18,15 @@
   justify-content: flex-start;
   align-items: center;
   height: 40px;
+}
+@media (max-width: 880px) {
+  .links-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: fit-content;
+    /* height: 40px; */
+  }
 }

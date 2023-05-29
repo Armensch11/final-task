@@ -16,9 +16,10 @@
   row-gap: 24px;
 }
 .sequence-container {
+  margin-top: 24px;
   word-break: break-all;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
+  align-items: flex-start;
 }

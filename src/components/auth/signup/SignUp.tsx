@@ -79,7 +79,11 @@ const SignUp = () => {
           setEmailError(null);
         }
       } catch (error) {
-        console.error("Error fetching sign-in methods:", error);
+        if (error instanceof Error) {
+          throw new Error(error.message);
+        } else {
+          throw new Error("Unknown error occurred");
+        }
       }
     }
   };
@@ -164,7 +168,7 @@ const SignUp = () => {
   useEffect(() => {
     validateEmail();
   }, []);
-  
+
   useEffect(() => {
     const user = localStorage.getItem("userData");
 
@@ -206,6 +210,7 @@ const SignUp = () => {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
+                  tabIndex={-1}
                   aria-label="toggle password visibility"
                   onClick={() => showPasswordOnClick(setShowPassword)}
                   onMouseDown={mouseDownShowPassword}
@@ -230,6 +235,7 @@ const SignUp = () => {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
+                  tabIndex={-1}
                   aria-label="toggle password visibility"
                   onClick={() => showPasswordOnClick(setShowPasswordRepeat)}
                   onMouseDown={mouseDownShowPassword}

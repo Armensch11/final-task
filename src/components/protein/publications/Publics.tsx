@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import React,{ useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PublicItem from "../publications/publicItem/PublicItem";
 import { v4 as uuidv4 } from "uuid";
-
+import { UNIPROT_URL } from "../../../utils/uniprotURL/uniprotURL";
+import "./Publics.css";
 type Link = {
   database: string;
   id: string;
@@ -30,16 +31,14 @@ interface PublicationInfo {
   references: Reference[];
 }
 
-const Publics = () => {
+const Publics:React.FC = () => {
   const { proteinId: entry } = useParams();
   const [publicationsInfo, setPublicationsInfo] =
     useState<PublicationResponse>();
 
   const getPublics = async () => {
     try {
-      const result = await fetch(
-        `https://rest.uniprot.org/uniprotkb/${entry}/publications`
-      );
+      const result = await fetch(`${UNIPROT_URL.BASE}${entry}/publications`);
       const publicsData: PublicationResponse = await result.json();
 
       setPublicationsInfo(publicsData);

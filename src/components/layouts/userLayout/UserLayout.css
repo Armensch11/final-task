@@ -25,3 +25,9 @@
   color: #1c69e6; */
   border-color: #a4c5f6;
 }
+@media (max-width: 768px) {
+  .homePage-header {
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+}
