@@ -45,25 +45,26 @@ export const fetchData = createAsyncThunk(
           ? nextLink
           : `${UNIPROT_URL.BASE}search?fields=${UNIPROT_URL.FIELDS}&query=(${searchQuery})`
       );
-      if (response.ok) {
-        const data: SearchResponse = await response.json();
 
-        const linkHeader = extractNextLink(response.headers.get("link"));
-
-        const headers: Headers = {
-          link: linkHeader ? linkHeader : null,
-          totalResults: response.headers.get("X-Total-Results"),
-        };
-
-        const result = {
-          result: data.results,
-          headers,
-          isExpandResult: isExpandResult,
-        };
-        return result;
-      } else {
+      if (!response.ok) {
         return null;
       }
+
+      const data: SearchResponse = await response.json();
+
+      const linkHeader = extractNextLink(response.headers.get("link"));
+
+      const headers: Headers = {
+        link: linkHeader ? linkHeader : null,
+        totalResults: response.headers.get("X-Total-Results"),
+      };
+
+      const result = {
+        result: data.results,
+        headers,
+        isExpandResult: isExpandResult,
+      };
+      return result;
     } catch (error) {
       throw new Error("Failed to fetch data");
     }
