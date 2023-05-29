@@ -29,10 +29,13 @@ type RequestSearch = {
   searchQuery: string;
   nextLink?: string;
 };
-export const fetchData = createAsyncThunk<SearchResult, RequestSearch>(
+export const fetchData = createAsyncThunk(
   "search/fetchData",
-  // @ts-ignore
-  async ({ searchQuery, nextLink }: RequestSearch) => {
+
+  async ({
+    searchQuery,
+    nextLink,
+  }: RequestSearch): Promise<SearchResult|undefined> => {
     try {
       const response = await fetch(
         nextLink
@@ -67,7 +70,7 @@ const searchSlice = createSlice({
     setFilters: (state, action) => {
       state.filters = action.payload.filters;
     },
-    resetPrevResults: (state,action) => {
+    resetPrevResults: (state, action) => {
       state.data = action.payload.data;
     },
   },

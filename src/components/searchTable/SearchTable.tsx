@@ -16,7 +16,13 @@ import { v4 as uuidv4 } from "uuid";
 import SortIcon from "../../assets/sort-Icon.svg";
 import { Dna } from "react-loader-spinner";
 import "./SearchTable.css";
-import React, { ReactNode, forwardRef, useEffect, useRef } from "react";
+import React, {
+  ReactNode,
+  forwardRef,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { fetchData } from "../../reducers/searchSlice";
 
 // type TableData = {
@@ -28,7 +34,6 @@ import { fetchData } from "../../reducers/searchSlice";
 //   length: string;
 //   id: string;
 // };
-
 
 interface CustomTableRowProps
   extends React.HTMLAttributes<HTMLTableRowElement> {
@@ -54,6 +59,22 @@ const SearchTable: React.FC = () => {
   const nextLink = useAppSelector((state) => state.searchState.nextLink);
   const dispatch = useAppDispatch();
 
+  const [sortOrder, setSortOrder] = useState<string | null>(null);
+  //experiment with sort
+  const handleSortIconClick = () => {
+    if (sortOrder === "asc") {
+      setSortOrder("desc");
+      console.log(sortOrder);
+    } else if (sortOrder === "desc") {
+      setSortOrder(null);
+      console.log("sortOrder is :", sortOrder);
+    } else {
+      // setSortColumn(column);
+      setSortOrder("asc");
+      console.log(sortOrder);
+    }
+  };
+  //experiment with sort
   useEffect(() => {
     const options = {
       root: null,
@@ -108,7 +129,7 @@ const SearchTable: React.FC = () => {
                 <TableCell className="column-name entry">
                   <div className="header-cell">
                     <Typography>Entry</Typography>
-                    <Icon>
+                    <Icon onClick={handleSortIconClick}>
                       <img src={SortIcon} alt="Filter Icon" />
                     </Icon>
                   </div>
@@ -235,4 +256,4 @@ const SearchTable: React.FC = () => {
   );
 };
 
-export default React.memo(SearchTable);
+export default SearchTable;

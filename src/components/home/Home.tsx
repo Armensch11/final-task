@@ -108,7 +108,7 @@ const Home = () => {
           onClick={() => {
             dispatch(setFilters({ filters: "" }));
           }}
-          sx={{ width: "80%", minWidth: "300px", height: "40px" }}
+          sx={{ width: "80%", minWidth: "150px", height: "40px" }}
           InputProps={{ sx: { height: 40 } }}
         ></TextField>
         <Button
