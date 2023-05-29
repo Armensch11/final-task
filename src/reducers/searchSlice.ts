@@ -70,6 +70,47 @@ export const fetchData = createAsyncThunk(
     }
   }
 );
+export const fetchSortedData = createAsyncThunk(
+  "search/fetchSortedData",
+
+  async ({
+    searchTerm,
+    filters,
+    sortField,
+    sortOrder,
+    isExpandResult,
+  }: RequestSearch): Promise<SearchResult | null> => {
+    try {
+      const response = await fetch(
+        sortField && sortOrder
+          ? `${UNIPROT_URL.BASE}search?fields=${UNIPROT_URL.FIELDS}&query=(${searchTerm})${filters}&sort=${sortField} ${sortOrder}`
+          : `${UNIPROT_URL.BASE}search?fields=${UNIPROT_URL.FIELDS}&query=(${searchTerm})${filters}`
+      );
+
+      if (!response.ok) {
+        return null;
+      }
+
+      const data: SearchResponse = await response.json();
+
+      const linkHeader = extractNextLink(response.headers.get("link"));
+      console.log(linkHeader);
+      const headers: Headers = {
+        link: linkHeader ? linkHeader : null,
+        totalResults: response.headers.get("X-Total-Results"),
+      };
+
+      const result = {
+        result: data.results,
+        headers,
+        isExpandResult: isExpandResult,
+      };
+      return result;
+    } catch (error) {
+      throw new Error("Failed to fetch data");
+    }
+  }
+);
 const searchSlice = createSlice({
   name: "search",
   initialState,
@@ -104,6 +145,15 @@ const searchSlice = createSlice({
       .addCase(fetchData.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message || "Failed to fetch data";
+      })
+      //sorted data reducer
+      .addCase(fetchSortedData.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = action.payload?.isExpandResult
+          ? [...state.data, ...action.payload.result]
+          : [...action.payload.result];
+        state.nextLink = action.payload ? action.payload.headers.link : null;
+        // Rest of the code remains the same
       });
   },
 });

@@ -23,7 +23,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { fetchData } from "../../reducers/searchSlice";
+import { fetchData, fetchSortedData } from "../../reducers/searchSlice";
 
 // type TableData = {
 //   entry: string;
@@ -61,15 +61,43 @@ const SearchTable: React.FC = () => {
 
   const [sortOrder, setSortOrder] = useState<string | null>(null);
   //experiment with sort
-  const handleSortIconClick = () => {
+  const searchTerm = useAppSelector((state) => state.searchState.searchTerm);
+  const filters = useAppSelector((state) => state.searchState.filters);
+  const handleSortIconClick = (sortField) => {
     if (sortOrder === "asc") {
+      dispatch(
+        fetchSortedData({
+          searchTerm: searchTerm,
+          filters: filters,
+          sortField: sortField,
+          sortOrder: "desc",
+          isExpandResult: false,
+        })
+      );
       setSortOrder("desc");
       console.log(sortOrder);
     } else if (sortOrder === "desc") {
+      dispatch(
+        fetchSortedData({
+          searchTerm: searchTerm,
+          filters: filters,
+          sortField: "",
+          sortOrder: null,
+          isExpandResult: false,
+        })
+      );
       setSortOrder(null);
       console.log("sortOrder is :", sortOrder);
     } else {
-      // setSortColumn(column);
+      dispatch(
+        fetchSortedData({
+          searchTerm: searchTerm,
+          filters: filters,
+          sortField: sortField,
+          sortOrder: "asc",
+          isExpandResult: false,
+        })
+      );
       setSortOrder("asc");
       console.log(sortOrder);
     }
@@ -86,7 +114,9 @@ const SearchTable: React.FC = () => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           if (nextLink) {
-            dispatch(fetchData({ searchQuery: "", nextLink ,isExpandResult:true}));
+            dispatch(
+              fetchData({ searchQuery: "", nextLink, isExpandResult: true })
+            );
           }
         }
       });
@@ -129,7 +159,11 @@ const SearchTable: React.FC = () => {
                 <TableCell className="column-name entry">
                   <div className="header-cell">
                     <Typography>Entry</Typography>
-                    <Icon onClick={handleSortIconClick}>
+                    <Icon
+                      onClick={() => {
+                        handleSortIconClick("accession");
+                      }}
+                    >
                       <img src={SortIcon} alt="Filter Icon" />
                     </Icon>
                   </div>
