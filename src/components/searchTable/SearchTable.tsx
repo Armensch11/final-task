@@ -19,24 +19,22 @@ import "./SearchTable.css";
 import React, { ReactNode, forwardRef, useEffect, useRef } from "react";
 import { fetchData } from "../../reducers/searchSlice";
 
-type TableData = {
-  entry: string;
-  entryName: string;
-  gene: string;
-  organism: string;
-  location: string;
-  length: string;
-  id: string;
-};
+// type TableData = {
+//   entry: string;
+//   entryName: string;
+//   gene: string;
+//   organism: string;
+//   location: string;
+//   length: string;
+//   id: string;
+// };
 
-type SearchTableProps = {
-  data: TableData[];
-};
+
 interface CustomTableRowProps
   extends React.HTMLAttributes<HTMLTableRowElement> {
   children: ReactNode;
 }
-
+//wrapped it in forward ref in order to provide ref property, as the default tableRow does not support it
 const CustomTableRow = forwardRef<HTMLTableRowElement, CustomTableRowProps>(
   ({ children, ...props }, ref) => (
     <TableRow ref={ref} {...props}>
@@ -52,29 +50,23 @@ const SearchTable: React.FC = () => {
   const isLoading = useAppSelector((state) => state.searchState.isLoading);
   const containerRef = useRef<HTMLDivElement>(null);
   const lastElementRef = useRef<HTMLTableRowElement | null>(null);
-  const searchTerm = useAppSelector((state) => state.searchState.searchTerm);
+  //const searchTerm = useAppSelector((state) => state.searchState.searchTerm);
   const nextLink = useAppSelector((state) => state.searchState.nextLink);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     const options = {
-      root: null, // Use the viewport as the root
+      root: null,
       rootMargin: "0px",
-      threshold: 0.5, // Trigger the callback when the element is at least 50% visible
+      threshold: 0.5,
     };
 
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // The last element is now visible
-          console.log("Last element is visible");
-          console.log(searchTerm);
           if (nextLink) {
             dispatch(fetchData({ searchQuery: "", nextLink }));
           }
-        } else {
-          // The last element is not visible
-          console.log("Last element is not visible");
         }
       });
     };
@@ -85,7 +77,6 @@ const SearchTable: React.FC = () => {
       observer.observe(lastElementRef.current);
     }
 
-    // Cleanup by disconnecting the observer when component unmounts
     return () => {
       if (lastElementRef.current) {
         observer.unobserve(lastElementRef.current);

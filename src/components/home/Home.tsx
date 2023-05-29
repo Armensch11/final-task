@@ -46,15 +46,22 @@ const Home = () => {
   };
   const onPressEnter = (event: KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === "Enter") {
-      dispatch(resetPrevResults({ data: [] }));
-      dispatch(setSearchInStore(searchTerm));
+      // dispatch(resetPrevResults({ data: [] }));
+
+      searchTerm
+        ? dispatch(setSearchInStore(searchTerm))
+        : dispatch(setSearchInStore("n/a"));
       dispatch(
         fetchData({
-          searchQuery: encodeURIComponent(`${searchTerm}${filters}`),
+          searchQuery: searchTerm
+            ? encodeURIComponent(`${searchTerm}${filters}`)
+            : encodeURIComponent("n/a"),
         })
       );
       setSearchParams({
-        query: encodeURIComponent(`${searchTerm}${filters}`),
+        query: searchTerm
+          ? encodeURIComponent(`${searchTerm}${filters}`)
+          : encodeURIComponent(`n/a`),
       });
     }
   };
@@ -106,12 +113,24 @@ const Home = () => {
         ></TextField>
         <Button
           onClick={() => {
+            dispatch(resetPrevResults({ data: [] }));
+          }}
+          sx={{
+            width: "180px",
+            borderRadius: "8px",
+            backgroundColor: "rgba(60, 134, 244, 0.2)",
+          }}
+        >
+          {"Clear"}
+        </Button>
+        <Button
+          onClick={() => {
             if (!searchTerm) {
               dispatch(fetchData({ searchQuery: "n/a" }));
               dispatch(setSearchInStore("n/a"));
               setSearchParams({ query: "n/a" });
             } else {
-              dispatch(resetPrevResults({ data: [] }));
+              //dispatch(resetPrevResults({ data: [] }));
               dispatch(setSearchInStore(searchTerm));
               dispatch(
                 fetchData({
