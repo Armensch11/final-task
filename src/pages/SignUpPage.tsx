@@ -1,7 +1,7 @@
 import SignUp from "../components/auth/signup/SignUp";
 import Layout from "../components/layouts/initialLayout/Layout";
 
-const LoginPage = () => {
+const SignUpPage: React.FC = () => {
   return (
     <Layout>
       <SignUp />
@@ -9,4 +9,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignUpPage;

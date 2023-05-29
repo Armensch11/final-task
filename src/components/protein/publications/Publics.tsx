@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React,{ useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PublicItem from "../publications/publicItem/PublicItem";
 import { v4 as uuidv4 } from "uuid";
@@ -31,7 +31,7 @@ interface PublicationInfo {
   references: Reference[];
 }
 
-const Publics = () => {
+const Publics:React.FC = () => {
   const { proteinId: entry } = useParams();
   const [publicationsInfo, setPublicationsInfo] =
     useState<PublicationResponse>();

@@ -1,11 +1,11 @@
-import { useRef, useState } from "react";
+import React,{ useRef, useState } from "react";
 import { Alert, IconButton, Snackbar, Typography } from "@mui/material";
 import useCopyToClipboard from "../../../hooks/copyToClipboard/useCopyToClipboard";
 import { useAppSelector } from "../../../hooks/typedReduxHooks/typedReduxHooks";
 import copyIcon from "../../../assets/copy-Icon.svg";
 import "./Details.css";
 
-const Details = () => {
+const Details:React.FC = () => {
   const sequenceRef = useRef<HTMLDivElement>(null);
   const [_, copyToClipboard] = useCopyToClipboard();
   const proteinData = useAppSelector((state) => state.proteinState);

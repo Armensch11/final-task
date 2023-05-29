@@ -11,7 +11,7 @@ import { useEffect, useRef, useState, KeyboardEvent } from "react";
 import {
   fetchData,
   setFilters,
-  resetPrevResults,
+  // resetPrevResults,
   setSearchInStore,
 } from "../../reducers/searchSlice";
 import { useSearchParams } from "react-router-dom";
@@ -56,6 +56,7 @@ const Home = () => {
           searchQuery: searchTerm
             ? encodeURIComponent(`${searchTerm}${filters}`)
             : encodeURIComponent("n/a"),
+          isExpandResult: false,
         })
       );
       setSearchParams({
@@ -111,7 +112,7 @@ const Home = () => {
           sx={{ width: "80%", minWidth: "150px", height: "40px" }}
           InputProps={{ sx: { height: 40 } }}
         ></TextField>
-        <Button
+        {/* <Button
           onClick={() => {
             dispatch(resetPrevResults({ data: [] }));
           }}
@@ -122,11 +123,13 @@ const Home = () => {
           }}
         >
           {"Clear"}
-        </Button>
+        </Button> */}
         <Button
           onClick={() => {
             if (!searchTerm) {
-              dispatch(fetchData({ searchQuery: "n/a" }));
+              dispatch(
+                fetchData({ searchQuery: "n/a", isExpandResult: false })
+              );
               dispatch(setSearchInStore("n/a"));
               setSearchParams({ query: "n/a" });
             } else {
@@ -135,6 +138,7 @@ const Home = () => {
               dispatch(
                 fetchData({
                   searchQuery: encodeURIComponent(`${searchTerm}${filters}`),
+                  isExpandResult: false,
                 })
               );
               setSearchParams({

@@ -16,18 +16,20 @@ const initialState: SearchState = {
   data: [],
   searchTerm: "",
   filters: "",
-  totalResults: "",
-  nextLink: "",
+  totalResults: null,
+  nextLink: null,
   isLoading: true,
   error: null,
 };
 interface SearchResult {
   result: ResultsItem[];
   headers: Headers;
+  isExpandResult: boolean;
 }
 type RequestSearch = {
   searchQuery: string;
   nextLink?: string;
+  isExpandResult: boolean;
 };
 export const fetchData = createAsyncThunk(
   "search/fetchData",
@@ -35,7 +37,8 @@ export const fetchData = createAsyncThunk(
   async ({
     searchQuery,
     nextLink,
-  }: RequestSearch): Promise<SearchResult|undefined> => {
+    isExpandResult,
+  }: RequestSearch): Promise<SearchResult | null> => {
     try {
       const response = await fetch(
         nextLink
@@ -52,8 +55,14 @@ export const fetchData = createAsyncThunk(
           totalResults: response.headers.get("X-Total-Results"),
         };
 
-        const result = { result: data.results, headers };
+        const result = {
+          result: data.results,
+          headers,
+          isExpandResult: isExpandResult,
+        };
         return result;
+      } else {
+        return null;
       }
     } catch (error) {
       throw new Error("Failed to fetch data");
@@ -82,10 +91,14 @@ const searchSlice = createSlice({
       })
       .addCase(fetchData.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = [...state.data, ...action.payload.result];
+        state.data = action.payload?.isExpandResult
+          ? [...state.data, ...action.payload.result]
+          : [...action.payload.result];
         // state.searchTerm = action.meta.arg.searchQuery;
-        state.totalResults = action.payload.headers.totalResults;
-        state.nextLink = action.payload.headers.link;
+        state.totalResults = action.payload
+          ? action.payload.headers.totalResults
+          : null;
+        state.nextLink = action.payload ? action.payload.headers.link : null;
       })
       .addCase(fetchData.rejected, (state, action) => {
         state.isLoading = false;

@@ -86,7 +86,7 @@ const SearchTable: React.FC = () => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           if (nextLink) {
-            dispatch(fetchData({ searchQuery: "", nextLink }));
+            dispatch(fetchData({ searchQuery: "", nextLink ,isExpandResult:true}));
           }
         }
       });
