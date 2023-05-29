@@ -171,7 +171,11 @@ const SearchTable: React.FC = () => {
                 <TableCell className="column-name entryName">
                   <div className="header-cell">
                     <Typography>Entry Name</Typography>
-                    <Icon>
+                    <Icon
+                      onClick={() => {
+                        handleSortIconClick("id");
+                      }}
+                    >
                       <img src={SortIcon} alt="Filter Icon" />
                     </Icon>
                   </div>
@@ -179,7 +183,11 @@ const SearchTable: React.FC = () => {
                 <TableCell className="column-name gene">
                   <div className="header-cell">
                     <Typography>Gene</Typography>
-                    <Icon>
+                    <Icon
+                      onClick={() => {
+                        handleSortIconClick("gene");
+                      }}
+                    >
                       <img src={SortIcon} alt="Filter Icon" />
                     </Icon>
                   </div>
@@ -187,7 +195,11 @@ const SearchTable: React.FC = () => {
                 <TableCell className="column-name organism">
                   <div className="header-cell">
                     <Typography>Organism</Typography>
-                    <Icon>
+                    <Icon
+                      onClick={() => {
+                        handleSortIconClick("organism_name");
+                      }}
+                    >
                       <img src={SortIcon} alt="Filter Icon" />
                     </Icon>
                   </div>
@@ -195,15 +207,19 @@ const SearchTable: React.FC = () => {
                 <TableCell className="column-name location">
                   <div className="header-cell">
                     <Typography> Subcellular Location</Typography>
-                    <Icon>
+                    {/* <Icon>
                       <img src={SortIcon} alt="Filter Icon" />
-                    </Icon>
+                    </Icon> */}
                   </div>
                 </TableCell>
                 <TableCell className="column-name length">
                   <div className="header-cell">
                     <Typography>Length</Typography>
-                    <Icon>
+                    <Icon
+                      onClick={() => {
+                        handleSortIconClick("length");
+                      }}
+                    >
                       <img src={SortIcon} alt="Filter Icon" />
                     </Icon>
                   </div>
