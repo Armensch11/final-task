@@ -16,7 +16,7 @@ import {
 } from "../../reducers/searchSlice";
 import { useSearchParams } from "react-router-dom";
 import FilterModal from "../modals/filterModal/FilterModal";
-
+import { BUTTON_BG } from "../../utils/colorConsts";
 interface Position {
   left: string;
   top: string;
@@ -112,7 +112,7 @@ const Home = () => {
           sx={{ width: "80%", minWidth: "150px", height: "40px" }}
           InputProps={{ sx: { height: 40 } }}
         ></TextField>
-      
+
         <Button
           onClick={() => {
             if (!searchTerm) {
@@ -138,7 +138,7 @@ const Home = () => {
           sx={{
             width: "180px",
             borderRadius: "8px",
-            backgroundColor: "rgba(60, 134, 244, 0.2)",
+            backgroundColor: BUTTON_BG,
           }}
         >
           {"Search"}
@@ -148,7 +148,7 @@ const Home = () => {
           onClick={showHideFilter}
           sx={{
             borderRadius: "8px",
-            backgroundColor: "rgba(60, 134, 244, 0.2)",
+            backgroundColor: BUTTON_BG,
             position: "relative",
           }}
         >

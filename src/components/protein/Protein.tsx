@@ -15,6 +15,7 @@ import { useAppDispatch } from "../../hooks/typedReduxHooks/typedReduxHooks";
 import "./Protein.css";
 import { setProteinInfo } from "../../reducers/proteinSlice";
 import { UNIPROT_URL } from "../../utils/uniprotURL/uniprotURL";
+import { TEXT_BG } from "../../utils/colorConsts";
 interface ProteinData {
   uniProtkbId: string;
   organism: { scientificName: string };
@@ -31,9 +32,7 @@ const Protein = () => {
 
   const getProteinData = async () => {
     try {
-      const response = await fetch(
-        `${UNIPROT_URL.BASE}${proteinId}`
-      );
+      const response = await fetch(`${UNIPROT_URL.BASE}${proteinId}`);
       const proteinInfo = await response.json();
       // console.log(proteinInfo);
       setProtein(proteinInfo);
@@ -71,7 +70,7 @@ const Protein = () => {
         <Typography
           variant="subtitle1"
           sx={{
-            backgroundColor: "#D8E7FF",
+            backgroundColor: TEXT_BG,
             borderRadius: "12px",
             padding: "2px 12px",
             fontSize: "14px",
