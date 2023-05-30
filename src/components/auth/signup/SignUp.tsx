@@ -112,7 +112,7 @@ const SignUp = () => {
           password
         );
         const user = userCredential.user;
-        console.log("Sign-up successful:", user);
+       
         dispatch(
           logIn({
             isLogged: true,
@@ -182,7 +182,10 @@ const SignUp = () => {
   };
 
   useEffect(() => {
-    if (password !== passwordConfirmation) {
+    if (
+      password !== passwordConfirmation &&
+      passwordConfirmation.length >= password.length
+    ) {
       setPasswordMatchError("Еntered passwords do not match");
     } else {
       setPasswordMatchError(null);
@@ -195,7 +198,8 @@ const SignUp = () => {
         !!passwordError ||
         !!passwordMatchError ||
         !password ||
-        !passwordConfirmation
+        !passwordConfirmation ||
+        password.length > passwordConfirmation.length
     );
   }, [
     emailError,
