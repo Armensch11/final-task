@@ -48,7 +48,7 @@ const CustomTableRow = forwardRef<HTMLTableRowElement, CustomTableRowProps>(
   )
 );
 
-const SearchTable: React.FC = () => {
+const SearchTable: React.FC = React.memo(() => {
   const searchData = useAppSelector((state) => {
     return state.searchState.data;
   });
@@ -137,18 +137,16 @@ const SearchTable: React.FC = () => {
 
   return (
     <>
-      {isLoading ? (
-        <div className="spinner-container">
-          {
-            <Dna
-              visible={true}
-              height="80"
-              width="80"
-              ariaLabel="dna-loading"
-              wrapperStyle={{}}
-              wrapperClass="dna-wrapper"
-            />
-          }
+      {isLoading && !nextLink ? (
+        <div className="result-list-expand-loader">
+          <Dna
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="dna-loading"
+            wrapperStyle={{}}
+            wrapperClass="dna-wrapper"
+          />
         </div>
       ) : (
         <div className="table-container" ref={containerRef}>
@@ -300,10 +298,22 @@ const SearchTable: React.FC = () => {
             </TableBody>
             {/* </div> */}
           </Table>
+          {isLoading && (
+            <div className="result-list-expand-loader">
+              <Dna
+                visible={true}
+                height="80"
+                width="80"
+                ariaLabel="dna-loading"
+                wrapperStyle={{}}
+                wrapperClass="dna-wrapper"
+              />
+            </div>
+          )}
         </div>
       )}
     </>
   );
-};
+});
 
 export default SearchTable;

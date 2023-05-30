@@ -112,18 +112,7 @@ const Home = () => {
           sx={{ width: "80%", minWidth: "150px", height: "40px" }}
           InputProps={{ sx: { height: 40 } }}
         ></TextField>
-        {/* <Button
-          onClick={() => {
-            dispatch(resetPrevResults({ data: [] }));
-          }}
-          sx={{
-            width: "180px",
-            borderRadius: "8px",
-            backgroundColor: "rgba(60, 134, 244, 0.2)",
-          }}
-        >
-          {"Clear"}
-        </Button> */}
+      
         <Button
           onClick={() => {
             if (!searchTerm) {
