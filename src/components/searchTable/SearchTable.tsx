@@ -6,7 +6,6 @@ import {
   TableHead,
   TableRow,
   Typography,
-  styled,
 } from "@mui/material";
 
 import { Link } from "react-router-dom";
@@ -32,7 +31,6 @@ interface CustomTableRowProps
   children: ReactNode;
 }
 
-
 export const CustomTableRow = forwardRef<
   HTMLTableRowElement,
   CustomTableRowProps
@@ -45,7 +43,6 @@ export const CustomTableRow = forwardRef<
 //wrapped it in forward ref in order to provide ref property, as the default tableRow does not support it
 
 const SearchTable: React.FC = React.memo(() => {
-
   const searchData = useAppSelector((state) => {
     return state.searchState.data;
   });
@@ -60,7 +57,8 @@ const SearchTable: React.FC = React.memo(() => {
   //experiment with sort
   const searchTerm = useAppSelector((state) => state.searchState.searchTerm);
   const filters = useAppSelector((state) => state.searchState.filters);
-  const handleSortIconClick = (sortField) => {
+
+  const handleSortIconClick = (sortField: string) => {
     if (sortOrder === "asc") {
       dispatch(
         fetchSortedData({
@@ -147,7 +145,7 @@ const SearchTable: React.FC = React.memo(() => {
         </div>
       ) : (
         <div className="table-container" ref={containerRef}>
-          <Table stickyHeader >
+          <Table stickyHeader>
             <TableHead>
               <TableRow className="table-row">
                 <CustomTableCell className="column-name index">
