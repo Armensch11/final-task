@@ -6,7 +6,9 @@ import {
   TableHead,
   TableRow,
   Typography,
+  styled,
 } from "@mui/material";
+
 import { Link } from "react-router-dom";
 import {
   useAppDispatch,
@@ -24,31 +26,26 @@ import React, {
   useState,
 } from "react";
 import { fetchData, fetchSortedData } from "../../reducers/searchSlice";
-
-// type TableData = {
-//   entry: string;
-//   entryName: string;
-//   gene: string;
-//   organism: string;
-//   location: string;
-//   length: string;
-//   id: string;
-// };
-
+import { CustomTableCell } from "./styled";
 interface CustomTableRowProps
   extends React.HTMLAttributes<HTMLTableRowElement> {
   children: ReactNode;
 }
+
+
+export const CustomTableRow = forwardRef<
+  HTMLTableRowElement,
+  CustomTableRowProps
+>(({ children, ...props }, ref) => (
+  <TableRow ref={ref} {...props}>
+    {children}
+  </TableRow>
+));
+
 //wrapped it in forward ref in order to provide ref property, as the default tableRow does not support it
-const CustomTableRow = forwardRef<HTMLTableRowElement, CustomTableRowProps>(
-  ({ children, ...props }, ref) => (
-    <TableRow ref={ref} {...props}>
-      {children}
-    </TableRow>
-  )
-);
 
 const SearchTable: React.FC = React.memo(() => {
+
   const searchData = useAppSelector((state) => {
     return state.searchState.data;
   });
@@ -150,11 +147,13 @@ const SearchTable: React.FC = React.memo(() => {
         </div>
       ) : (
         <div className="table-container" ref={containerRef}>
-          <Table>
+          <Table stickyHeader >
             <TableHead>
               <TableRow className="table-row">
-                <TableCell className="column-name index">#</TableCell>
-                <TableCell className="column-name entry">
+                <CustomTableCell className="column-name index">
+                  #
+                </CustomTableCell>
+                <CustomTableCell>
                   <div className="header-cell">
                     <Typography>Entry</Typography>
                     <Icon
@@ -165,8 +164,8 @@ const SearchTable: React.FC = React.memo(() => {
                       <img src={SortIcon} alt="Filter Icon" />
                     </Icon>
                   </div>
-                </TableCell>
-                <TableCell className="column-name entryName">
+                </CustomTableCell>
+                <CustomTableCell className="column-name entryName">
                   <div className="header-cell">
                     <Typography>Entry Name</Typography>
                     <Icon
@@ -177,8 +176,8 @@ const SearchTable: React.FC = React.memo(() => {
                       <img src={SortIcon} alt="Filter Icon" />
                     </Icon>
                   </div>
-                </TableCell>
-                <TableCell className="column-name gene">
+                </CustomTableCell>
+                <CustomTableCell className="column-name gene">
                   <div className="header-cell">
                     <Typography>Gene</Typography>
                     <Icon
@@ -189,8 +188,8 @@ const SearchTable: React.FC = React.memo(() => {
                       <img src={SortIcon} alt="Filter Icon" />
                     </Icon>
                   </div>
-                </TableCell>
-                <TableCell className="column-name organism">
+                </CustomTableCell>
+                <CustomTableCell className="column-name organism">
                   <div className="header-cell">
                     <Typography>Organism</Typography>
                     <Icon
@@ -201,16 +200,16 @@ const SearchTable: React.FC = React.memo(() => {
                       <img src={SortIcon} alt="Filter Icon" />
                     </Icon>
                   </div>
-                </TableCell>
-                <TableCell className="column-name location">
+                </CustomTableCell>
+                <CustomTableCell className="column-name location">
                   <div className="header-cell">
                     <Typography> Subcellular Location</Typography>
                     {/* <Icon>
                       <img src={SortIcon} alt="Filter Icon" />
                     </Icon> */}
                   </div>
-                </TableCell>
-                <TableCell className="column-name length">
+                </CustomTableCell>
+                <CustomTableCell className="column-name length">
                   <div className="header-cell">
                     <Typography>Length</Typography>
                     <Icon
@@ -221,7 +220,7 @@ const SearchTable: React.FC = React.memo(() => {
                       <img src={SortIcon} alt="Filter Icon" />
                     </Icon>
                   </div>
-                </TableCell>
+                </CustomTableCell>
               </TableRow>
             </TableHead>
             {/* <div style={{ overflow: "auto" }} ref={containerRef}> */}
