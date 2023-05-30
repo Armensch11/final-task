@@ -16,6 +16,7 @@ import "./Protein.css";
 import { setProteinInfo } from "../../reducers/proteinSlice";
 import { UNIPROT_URL } from "../../utils/uniprotURL/uniprotURL";
 import { TEXT_BG } from "../../utils/colorConsts";
+
 interface ProteinData {
   uniProtkbId: string;
   organism: { scientificName: string };

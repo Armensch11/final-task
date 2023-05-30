@@ -9,7 +9,7 @@ export const extractNextLink = (header: string | null): string | null => {
       typeof start === "number" && end
         ? header.substring(start + 1, end)
         : null;
-  
+
     return link;
   }
   return null;

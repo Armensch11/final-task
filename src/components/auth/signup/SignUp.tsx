@@ -153,7 +153,7 @@ const SignUp = () => {
           password
         );
         const user = userCredential.user;
-      
+
         dispatch(
           logIn({
             isLogged: true,
@@ -183,7 +183,7 @@ const SignUp = () => {
 
   useEffect(() => {
     if (password !== passwordConfirmation) {
-      setPasswordMatchError("entered passwords do not match");
+      setPasswordMatchError("Еntered passwords do not match");
     } else {
       setPasswordMatchError(null);
     }
