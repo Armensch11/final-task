@@ -1,5 +1,5 @@
-import Initial from "../components/initial/Initial";
-import Layout from "../components/layouts/initialLayout/Layout";
+import Initial from "src/components/initial/Initial";
+import Layout from "src/components/layouts/initialLayout/Layout";
 
 const InitialPage: React.FC = () => {
   return (

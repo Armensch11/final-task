@@ -3,20 +3,20 @@ import "./Home.css";
 import {
   useAppDispatch,
   useAppSelector,
-} from "../../hooks/typedReduxHooks/typedReduxHooks";
+} from "src/hooks/typedReduxHooks/typedReduxHooks";
 
-import filterIcon from "../../assets/filter-Icon.svg";
-import SearchResult from "../../components/searchResult/SearchResult";
+import filterIcon from "src/assets/filter-Icon.svg";
+import SearchResult from "src/components/searchResult/SearchResult";
 import { useEffect, useRef, useState, KeyboardEvent } from "react";
 import {
   fetchData,
   setFilters,
   // resetPrevResults,
   setSearchInStore,
-} from "../../reducers/searchSlice";
+} from "src/reducers/searchSlice";
 import { useSearchParams } from "react-router-dom";
 import FilterModal from "../modals/filterModal/FilterModal";
-import { BUTTON_BG } from "../../utils/colorConsts";
+import { BUTTON_BG } from "src/utils/colorConsts";
 interface Position {
   left: string;
   top: string;

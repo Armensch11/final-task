@@ -3,8 +3,8 @@ import "./UserLayout.css";
 import {
   useAppDispatch,
   useAppSelector,
-} from "../../../hooks/typedReduxHooks/typedReduxHooks";
-import { logOut } from "../../../reducers/authSlice";
+} from "src/hooks/typedReduxHooks/typedReduxHooks";
+import { logOut } from "src/reducers/authSlice";
 import { ReactNode, FC } from "react";
 
 type UserLayoutProps = {

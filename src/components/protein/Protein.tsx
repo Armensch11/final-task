@@ -11,11 +11,11 @@ import Feature from "./feature/Feature";
 import Publics from "./publications/Publics";
 
 import { Typography } from "@mui/material";
-import { useAppDispatch } from "../../hooks/typedReduxHooks/typedReduxHooks";
+import { useAppDispatch } from "src/hooks/typedReduxHooks/typedReduxHooks";
 import "./Protein.css";
-import { setProteinInfo } from "../../reducers/proteinSlice";
-import { UNIPROT_URL } from "../../utils/uniprotURL/uniprotURL";
-import { TEXT_BG } from "../../utils/colorConsts";
+import { setProteinInfo } from "src/reducers/proteinSlice";
+import { UNIPROT_URL } from "src/utils/uniprotURL/uniprotURL";
+import { TEXT_BG } from "src/utils/colorConsts";
 
 interface ProteinData {
   uniProtkbId: string;

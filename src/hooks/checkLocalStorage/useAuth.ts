@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppDispatch } from "../typedReduxHooks/typedReduxHooks";
-import { logIn } from "../../reducers/authSlice";
+import { logIn } from "src/reducers/authSlice";
 
 const useAuth = () => {
   const dispatch = useAppDispatch();

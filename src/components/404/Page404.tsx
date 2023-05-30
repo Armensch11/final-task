@@ -1,7 +1,7 @@
 import { Typography, Button, styled } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import "./Page404.css";
-import { useAppSelector } from "../../hooks/typedReduxHooks/typedReduxHooks";
+import { useAppSelector } from "src/hooks/typedReduxHooks/typedReduxHooks";
 
 const StyledButton = styled(Button)({
   fontSize: "14px",

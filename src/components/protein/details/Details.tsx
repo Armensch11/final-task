@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import { Alert, IconButton, Snackbar, Typography } from "@mui/material";
-import useCopyToClipboard from "../../../hooks/copyToClipboard/useCopyToClipboard";
-import { useAppSelector } from "../../../hooks/typedReduxHooks/typedReduxHooks";
-import copyIcon from "../../../assets/copy-Icon.svg";
+import useCopyToClipboard from "src/hooks/copyToClipboard/useCopyToClipboard";
+import { useAppSelector } from "src/hooks/typedReduxHooks/typedReduxHooks";
+import copyIcon from "src/assets/copy-Icon.svg";
 import "./Details.css";
 
 const Details: React.FC = () => {

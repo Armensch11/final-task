@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { TextField, Button, Typography, Link } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../../services/firebase";
-import { emailFormat } from "../../../utils/validations";
+import { auth } from "src/services/firebase";
+import { emailFormat } from "src/utils/validations";
 
 import "./Login.css";
 import { FirebaseError } from "firebase/app";
-import { useAppDispatch } from "../../../hooks/typedReduxHooks/typedReduxHooks";
-import { logIn } from "../../../reducers/authSlice";
+import { useAppDispatch } from "src/hooks/typedReduxHooks/typedReduxHooks";
+import { logIn } from "src/reducers/authSlice";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");

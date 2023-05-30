@@ -10,9 +10,9 @@ import {
 } from "@mui/material";
 import "./FilterModal.css";
 import { useCallback, useEffect, useState } from "react";
-import { fetchFilterOptions } from "../../../utils/fetchFilterOptions";
-import { useAppDispatch } from "../../../hooks/typedReduxHooks/typedReduxHooks";
-import { setFilters } from "../../../reducers/searchSlice";
+import { fetchFilterOptions } from "src/utils/fetchFilterOptions";
+import { useAppDispatch } from "src/hooks/typedReduxHooks/typedReduxHooks";
+import { setFilters } from "src/reducers/searchSlice";
 // import { setApplyButtonStatus } from "../../../utils/validations";
 interface Option {
   value: string;

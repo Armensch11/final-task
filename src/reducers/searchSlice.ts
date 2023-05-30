@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { UNIPROT_URL } from "../utils/uniprotURL/uniprotURL";
-import { SearchResponse, ResultsItem, Headers } from "../api/interfaces";
-import { extractNextLink } from "../utils/extractNextLink";
+import { UNIPROT_URL } from "src/utils/uniprotURL/uniprotURL";
+import { SearchResponse, ResultsItem, Headers } from "src/api/interfaces";
+import { extractNextLink } from "src/utils/extractNextLink";
 interface SearchState {
   data: ResultsItem[];
   searchTerm: string;

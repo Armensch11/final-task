@@ -13,16 +13,16 @@ import {
   createUserWithEmailAndPassword,
   fetchSignInMethodsForEmail,
 } from "firebase/auth";
-import { auth } from "../../../services/firebase";
-import { emailFormat, passwordFormat } from "../../../utils/validations";
+import { auth } from "src/services/firebase";
+import { emailFormat, passwordFormat } from "src/utils/validations";
 
 import "./SignUp.css";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useAppDispatch } from "../../../hooks/typedReduxHooks/typedReduxHooks";
-import { logIn } from "../../../reducers/authSlice";
+import { useAppDispatch } from "src/hooks/typedReduxHooks/typedReduxHooks";
+import { logIn } from "src/reducers/authSlice";
 
 const SignUp = () => {
-  // const [email, setEmail] = useState("");
+
   const emailRef = useRef<HTMLInputElement | null>(null);
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");

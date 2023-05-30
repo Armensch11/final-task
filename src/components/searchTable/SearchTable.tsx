@@ -12,9 +12,9 @@ import { Link } from "react-router-dom";
 import {
   useAppDispatch,
   useAppSelector,
-} from "../../hooks/typedReduxHooks/typedReduxHooks";
+} from "src/hooks/typedReduxHooks/typedReduxHooks";
 import { v4 as uuidv4 } from "uuid";
-import SortIcon from "../../assets/sort-Icon.svg";
+import SortIcon from "src/assets/sort-Icon.svg";
 import { Dna } from "react-loader-spinner";
 import "./SearchTable.css";
 import React, {
@@ -24,7 +24,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { fetchData, fetchSortedData } from "../../reducers/searchSlice";
+import { fetchData, fetchSortedData } from "src/reducers/searchSlice";
 import { CustomTableCell } from "./styled";
 interface CustomTableRowProps
   extends React.HTMLAttributes<HTMLTableRowElement> {

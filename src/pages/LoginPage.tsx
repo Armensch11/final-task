@@ -1,5 +1,5 @@
-import Login from "../components/auth/login/Login";
-import Layout from "../components/layouts/initialLayout/Layout";
+import Login from "src/components/auth/login/Login";
+import Layout from "src/components/layouts/initialLayout/Layout";
 
 const LoginPage: React.FC = () => {
   return (

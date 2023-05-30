@@ -2,8 +2,8 @@ import { Button, Typography } from "@mui/material";
 import "./Initial.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { useAppDispatch } from "../../hooks/typedReduxHooks/typedReduxHooks";
-import { logIn } from "../../reducers/authSlice";
+import { useAppDispatch } from "src/hooks/typedReduxHooks/typedReduxHooks";
+import { logIn } from "src/reducers/authSlice";
 
 const Initial = () => {
   const navigate = useNavigate();
