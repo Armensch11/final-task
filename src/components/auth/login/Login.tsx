@@ -73,6 +73,39 @@ const Login = () => {
       }
     }
   };
+  const onPressEnter = async () => {
+    if (emailError || passwordError) {
+      return;
+    }
+    try {
+      if (email && password) {
+        const { user } = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+        const token = await auth.currentUser?.getIdToken(false);
+
+        dispatch(logIn({ isLogged: true, email, uid: user.uid }));
+        localStorage.setItem(
+          "userData",
+          JSON.stringify({ email, token, uid: user.uid })
+        );
+        navigate("/search");
+      }
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        const errorMessage = error.code;
+        errorMessage === "auth/user-not-found"
+          ? setEmailError("user does not exist")
+          : setPasswordError("check whether password typed correctly");
+        throw new Error("Authentication error: " + errorMessage);
+      } else {
+        throw new Error("An error occurred:" + error);
+      }
+    }
+  };
   useEffect(() => {
     setIsDisabled(!!emailError || !!passwordError || !email || !password);
   }, [emailError, passwordError, email, password]);
@@ -108,6 +141,11 @@ const Login = () => {
           label="Password"
           value={password}
           onChange={onPasswordChange}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              onPressEnter();
+            }
+          }}
           fullWidth={true}
           type="password"
           error={!!passwordError}

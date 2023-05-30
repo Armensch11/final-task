@@ -136,7 +136,47 @@ const SignUp = () => {
       setFormError("An error occurred during sign-up.");
     }
   };
+  const onPressEnter = async () => {
+    if (!emailRef.current?.value || !password || !passwordConfirmation) {
+      return;
+    }
 
+    if (password !== passwordConfirmation) {
+      return;
+    }
+
+    try {
+      if (emailRef.current) {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          emailRef.current.value,
+          password
+        );
+        const user = userCredential.user;
+      
+        dispatch(
+          logIn({
+            isLogged: true,
+            email: emailRef.current.value,
+            uid: user.uid,
+          })
+        );
+        const idToken = await user.getIdToken();
+        localStorage.setItem(
+          "userData",
+          JSON.stringify({
+            email: emailRef.current.value,
+            token: idToken,
+            uid: user.uid,
+          })
+        );
+        navigate("/search");
+      }
+    } catch (error) {
+      //console.error("Sign-up error:", error);
+      setFormError("An error occurred during sign-up.");
+    }
+  };
   const onEmailBlur = () => {
     validateEmail();
   };
@@ -228,6 +268,11 @@ const SignUp = () => {
           type={showPasswordRepeat ? "text" : "password"}
           value={passwordConfirmation}
           onChange={handlePasswordConfirmationChange}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              onPressEnter();
+            }
+          }}
           fullWidth={true}
           error={!!passwordMatchError}
           helperText={passwordMatchError}
