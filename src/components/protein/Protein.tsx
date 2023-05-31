@@ -5,12 +5,14 @@ import {
   Outlet,
   Routes,
   Route,
+  useNavigate,
 } from "react-router-dom";
 import Details from "./details/Details";
 import Feature from "./feature/Feature";
 import Publics from "./publications/Publics";
 
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useAppDispatch } from "src/hooks/typedReduxHooks/typedReduxHooks";
 import "./Protein.css";
 import { setProteinInfo } from "src/reducers/proteinSlice";
@@ -61,9 +63,22 @@ const Protein = () => {
   useEffect(() => {
     getProteinData();
   }, [proteinId]);
+  const navigate = useNavigate();
+
+  const onGoBack = () => {
+    navigate("/search"); // Navigate to another route
+  };
 
   return (
     <div className="protein-info-container">
+      <Button
+        onClick={() => {
+          onGoBack();
+        }}
+        sx={{ marginBottom: "24px" }}
+      >
+        <ArrowBackIosNewIcon />
+      </Button>
       <div className="protein-info-header">
         <Typography variant="h5">
           {proteinId + " / " + protein?.uniProtkbId}
