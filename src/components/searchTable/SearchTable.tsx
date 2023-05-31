@@ -142,7 +142,7 @@ const SearchTable: React.FC = React.memo(() => {
         </div>
       ) : (
         <div className="table-container" ref={containerRef}>
-          <Table stickyHeader >
+          <Table stickyHeader>
             <TableHead>
               <TableRow className="table-row">
                 <CustomTableCell className="column-name index">

@@ -45,7 +45,7 @@ const PublicItem: FC<PublicItemProps> = ({
   links,
   link3Title,
 }): JSX.Element => {
-  const isLinkActive = (href: string) => href.length > 0;
+  const isLinkActive = (href: string): boolean => href.length > 0;
   return (
     <>
       <div className="publication-container">

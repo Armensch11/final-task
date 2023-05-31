@@ -112,7 +112,9 @@ const FilterModal = ({
             </FormControl>
           </Box>
           <Box>
-            <Typography sx={{ fontWeight: "bold",marginBottom:"8px" }}>Sequence length</Typography>
+            <Typography sx={{ fontWeight: "bold", marginBottom: "8px" }}>
+              Sequence length
+            </Typography>
             <Stack direction="row" spacing={2} justifyContent={"space-between"}>
               <TextField
                 label="From"

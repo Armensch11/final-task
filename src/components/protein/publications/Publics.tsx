@@ -36,7 +36,7 @@ const Publics: React.FC = (): JSX.Element => {
   const [publicationsInfo, setPublicationsInfo] =
     useState<PublicationResponse>();
 
-  const getPublics = async () => {
+  const getPublics = async (): Promise<void> => {
     try {
       const result = await fetch(`${UNIPROT_URL.BASE}${entry}/publications`);
       const publicsData: PublicationResponse = await result.json();
