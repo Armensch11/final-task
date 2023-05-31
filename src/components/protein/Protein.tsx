@@ -134,6 +134,7 @@ const Protein = () => {
       </div>
       <Outlet />
       <Routes>
+        <Route index element={<Details />} />
         <Route path="details" element={<Details />} />
         <Route path="feature" element={<Feature />} />
         <Route path="publications" element={<Publics />} />
