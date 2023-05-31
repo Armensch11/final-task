@@ -75,7 +75,7 @@ const Protein = () => {
         onClick={() => {
           onGoBack();
         }}
-        sx={{ marginBottom: "24px" }}
+        sx={{ marginBottom: "24px", marginLeft: "-60px" }}
       >
         <ArrowBackIosNewIcon />
       </Button>
