@@ -7,7 +7,7 @@ const SearchResult: React.FC = () => {
     return state.searchState.totalResults;
   });
   const searchTerm = useAppSelector((state) => {
-    const term = decodeURIComponent(state.searchState.searchTerm);
+    const term = state.searchState.searchTerm;
 
     return term;
   });

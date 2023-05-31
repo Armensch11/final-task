@@ -141,10 +141,11 @@ const searchSlice = createSlice({
       .addCase(fetchData.fulfilled, (state, action) => {
         state.isLoading = false;
         // @ts-ignore
-        state.data = action.payload?.isExpandResult
-          ? [...state.data, ...action.payload.result]
-          : // @ts-ignore
-            [...action.payload.result];
+        state.data =
+          action.payload?.isExpandResult && action.payload.result
+            ? [...state.data, ...action.payload.result]
+            : // @ts-ignore
+              [...action.payload.result];
         // state.searchTerm = action.meta.arg.searchQuery;
         state.totalResults = action.payload
           ? action.payload.headers.totalResults
