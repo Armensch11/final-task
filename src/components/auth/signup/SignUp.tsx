@@ -130,6 +130,7 @@ const SignUp = (): JSX.Element => {
 
       navigate("/search");
     } catch (error) {
+      setIsSigningIn(false);
       // console.error("Sign-up error:", error);
       setFormError("An error occurred during sign-up.");
     }
@@ -148,10 +149,7 @@ const SignUp = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (
-      password !== passwordConfirmation &&
-      passwordConfirmation.length >= password.length
-    ) {
+    if (password !== passwordConfirmation && passwordConfirmation.length > 0) {
       setPasswordMatchError("Еntered passwords do not match");
     } else {
       setPasswordMatchError(null);
