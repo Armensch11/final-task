@@ -31,7 +31,7 @@ interface PublicationInfo {
   references: Reference[];
 }
 
-const Publics: React.FC = () => {
+const Publics: React.FC = (): JSX.Element => {
   const { proteinId: entry } = useParams();
   const [publicationsInfo, setPublicationsInfo] =
     useState<PublicationResponse>();
@@ -43,7 +43,9 @@ const Publics: React.FC = () => {
 
       setPublicationsInfo(publicsData);
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
     }
   };
 

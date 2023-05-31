@@ -1,5 +1,6 @@
 .protein-info-container {
   margin: 72px 130px;
+  background-color: white;
 }
 .protein-info-header {
   display: flex;

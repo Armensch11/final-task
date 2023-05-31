@@ -5,6 +5,7 @@
   padding-right: 130px;
   overflow: scroll;
   position: fixed;
+  background-color: white;
 }
 /* .results-table {
   height: 500px;

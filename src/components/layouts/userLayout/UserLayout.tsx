@@ -17,7 +17,7 @@ const StyledButton = styled(Button)({
   textTransform: "none",
 });
 
-const UserLayout: FC<UserLayoutProps> = ({ children }) => {
+const UserLayout: FC<UserLayoutProps> = ({ children }): JSX.Element => {
   const userEmail = useAppSelector((state) => state.authState.userEmail);
   const dispatch = useAppDispatch();
 

@@ -27,13 +27,13 @@ interface ProteinData {
   geneType: string;
 }
 
-const Protein = () => {
+const Protein = (): JSX.Element => {
   const { proteinId } = useParams();
   const [protein, setProtein] = useState<ProteinData | null>(null);
   const dispatch = useAppDispatch();
   const [activeLink, setActiveLink] = useState("");
 
-  const getProteinData = async () => {
+  const getProteinData = async (): Promise<void> => {
     try {
       const response = await fetch(`${UNIPROT_URL.BASE}${proteinId}`);
       const proteinInfo = await response.json();
@@ -52,11 +52,13 @@ const Protein = () => {
       };
       dispatch(setProteinInfo(pickProteinData));
     } catch (error) {
-      console.error("Error fetching protein data:", error);
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
     }
   };
 
-  const onLinkClick = (link: string) => {
+  const onLinkClick = (link: string): void => {
     setActiveLink(link);
   };
 
@@ -65,7 +67,7 @@ const Protein = () => {
   }, [proteinId]);
   const navigate = useNavigate();
 
-  const onGoBack = () => {
+  const onGoBack = (): void => {
     navigate("/search"); // Navigate to another route
   };
 
@@ -106,7 +108,7 @@ const Protein = () => {
           Gene
         </Typography>
         <Typography variant="subtitle2">
-          {protein?.genes[0].geneName.value}
+          {protein?.genes[0]?.geneName?.value}
         </Typography>
       </div>
       <div className="protein-info-main">

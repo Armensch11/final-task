@@ -5,7 +5,7 @@ import { useAppSelector } from "src/hooks/typedReduxHooks/typedReduxHooks";
 import copyIcon from "src/assets/copy-Icon.svg";
 import "./Details.css";
 
-const Details: React.FC = () => {
+const Details: React.FC = (): JSX.Element => {
   const sequenceRef = useRef<HTMLDivElement>(null);
   const [_, copyToClipboard] = useCopyToClipboard();
   const proteinData = useAppSelector((state) => state.proteinState);

@@ -22,7 +22,7 @@ interface Position {
   top: string;
 }
 
-const Home = () => {
+const Home = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -39,7 +39,7 @@ const Home = () => {
     top: "0",
   });
 
-  const showHideFilter = () => {
+  const showHideFilter = (): void => {
     setShow((prev) => {
       return !prev;
     });
@@ -71,7 +71,7 @@ const Home = () => {
     // dispatch(fetchData("n/a"));
     // setSearchParams({ query: "n/a" });
 
-    const handleResize = () => {
+    const handleResize = (): void => {
       if (filterButtonRef.current) {
         const { left, top } = filterButtonRef.current.getBoundingClientRect();
         setFilterButtonPosition({

@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useAppDispatch } from "src/hooks/typedReduxHooks/typedReduxHooks";
 import { logIn } from "src/reducers/authSlice";
 
-const Initial = () => {
+const Initial = (): JSX.Element => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 

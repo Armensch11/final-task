@@ -21,7 +21,7 @@ interface GeneItem {
 }
 
 interface GeneName {
-  evidences?: any[];
+  evidences?: string[];
   value: string;
 }
 
@@ -29,7 +29,7 @@ interface Organism {
   commonName: string;
   scientificName: string;
   taxonId: number;
-  lineage?: any[];
+  lineage?: string[];
 }
 
 interface Sequence {

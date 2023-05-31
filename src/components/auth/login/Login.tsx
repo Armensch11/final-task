@@ -12,7 +12,7 @@ import { logIn } from "src/reducers/authSlice";
 import { InfinitySpin } from "react-loader-spinner";
 import { AUTH_SPINNER } from "src/utils/colorConsts";
 
-const Login = () => {
+const Login = (): JSX.Element => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -22,7 +22,7 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEmail(e.target.value);
     if (e.target.value.match(emailFormat)) {
       setEmailError(null);
@@ -31,7 +31,7 @@ const Login = () => {
     }
   };
 
-  const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
     if (e.target.value?.length >= 6) {
       setPasswordError(null);
@@ -39,7 +39,7 @@ const Login = () => {
       setPasswordError("Password is too short");
     }
   };
-  const loginExecutor = async () => {
+  const loginExecutor = async (): Promise<void> => {
     if (emailError || passwordError) {
       return;
     }
@@ -65,6 +65,7 @@ const Login = () => {
         navigate("/search");
       }
     } catch (error) {
+      setIsLogging(false);
       if (error instanceof FirebaseError) {
         const errorMessage = error.code;
         errorMessage === "auth/user-not-found"
@@ -76,12 +77,14 @@ const Login = () => {
       }
     }
   };
-  const onUserLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const onUserLogin = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ): Promise<void> => {
     e.preventDefault();
-    loginExecutor();
+    await loginExecutor();
   };
-  const onPressEnter = async () => {
-    loginExecutor();
+  const onPressEnter = async (): Promise<void> => {
+    await loginExecutor();
   };
   useEffect(() => {
     setIsDisabled(!!emailError || !!passwordError || !email || !password);

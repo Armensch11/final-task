@@ -58,7 +58,7 @@ const SearchTable: React.FC = React.memo(() => {
   const searchTerm = useAppSelector((state) => state.searchState.searchTerm);
   const filters = useAppSelector((state) => state.searchState.filters);
 
-  const handleSortIconClick = (sortField: string) => {
+  const handleSortIconClick = (sortField: string): void => {
     if (sortOrder === "asc") {
       dispatch(
         fetchSortedData({
@@ -70,7 +70,6 @@ const SearchTable: React.FC = React.memo(() => {
         })
       );
       setSortOrder("desc");
-      console.log(sortOrder);
     } else if (sortOrder === "desc") {
       dispatch(
         fetchSortedData({
@@ -82,7 +81,6 @@ const SearchTable: React.FC = React.memo(() => {
         })
       );
       setSortOrder(null);
-      console.log("sortOrder is :", sortOrder);
     } else {
       dispatch(
         fetchSortedData({
@@ -94,7 +92,6 @@ const SearchTable: React.FC = React.memo(() => {
         })
       );
       setSortOrder("asc");
-      console.log(sortOrder);
     }
   };
   //experiment with sort
@@ -105,7 +102,7 @@ const SearchTable: React.FC = React.memo(() => {
       threshold: 0.5,
     };
 
-    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+    const handleIntersection = (entries: IntersectionObserverEntry[]): void => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           if (nextLink) {

@@ -12,7 +12,7 @@ import ProtectedRoute from "src/components/auth/protectedRoute/ProtectedRoute";
 
 import Page404 from "src/components/404/Page404";
 
-const App = () => {
+const App = (): JSX.Element => {
   const isAuth = useAppSelector((state) => {
     return state.authState.isLogged;
   });

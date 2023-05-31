@@ -26,7 +26,7 @@ const FilterModal = ({
 }: {
   showHideFilter: () => void;
   searchTerm: string;
-}) => {
+}): JSX.Element => {
   const [options, setOptions] = useState<Record<string, Option[]>>();
 
   const [gene, setGene] = useState<string>("");
@@ -75,7 +75,9 @@ const FilterModal = ({
           </Typography>
 
           <Box>
-            <Typography sx={{ fontWeight: "bold" }}>Gene Name</Typography>
+            <Typography sx={{ fontWeight: "bold", marginBottom: "8px" }}>
+              Gene Name
+            </Typography>
             <TextField
               label="Enter Gene Name"
               fullWidth
@@ -110,7 +112,7 @@ const FilterModal = ({
             </FormControl>
           </Box>
           <Box>
-            <Typography sx={{ fontWeight: "bold" }}>Sequence length</Typography>
+            <Typography sx={{ fontWeight: "bold",marginBottom:"8px" }}>Sequence length</Typography>
             <Stack direction="row" spacing={2} justifyContent={"space-between"}>
               <TextField
                 label="From"

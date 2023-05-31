@@ -23,7 +23,7 @@ import { logIn } from "src/reducers/authSlice";
 import { InfinitySpin } from "react-loader-spinner";
 import { AUTH_SPINNER } from "src/utils/colorConsts";
 
-const SignUp = () => {
+const SignUp = (): JSX.Element => {
   // const emailRef = useRef<HTMLInputElement | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,15 +45,15 @@ const SignUp = () => {
 
   const showPasswordOnClick = (
     setter: React.Dispatch<React.SetStateAction<boolean>>
-  ) => setter((show) => !show);
+  ): void => setter((show) => !show);
 
   const mouseDownShowPassword = (
     event: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  ): void => {
     event.preventDefault();
   };
 
-  const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEmail(e.target.value);
 
     e.target.value.match(emailFormat)
@@ -61,7 +61,7 @@ const SignUp = () => {
       : setEmailError("Please enter a valid email");
   };
 
-  const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
 
     e.target.value.match(passwordFormat)
@@ -70,10 +70,8 @@ const SignUp = () => {
           "Must contain at least 6 symbols, uppercase/lowercase characters and numbers"
         );
   };
-  const validateEmail = async () => {
+  const validateEmail = async (): Promise<void> => {
     if (email.match(emailFormat)) {
-      
-
       try {
         const signInMethods = await fetchSignInMethodsForEmail(auth, email);
         if (signInMethods.length > 0) {
@@ -92,10 +90,10 @@ const SignUp = () => {
   };
   const handlePasswordConfirmationChange = (
     e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  ): void => {
     setPasswordConfirmation(e.target.value);
   };
-  const signUpExecutor = async () => {
+  const signUpExecutor = async (): Promise<void> => {
     if (!email || !password || !passwordConfirmation) {
       return;
     }
@@ -132,18 +130,20 @@ const SignUp = () => {
 
       navigate("/search");
     } catch (error) {
-      console.error("Sign-up error:", error);
+      // console.error("Sign-up error:", error);
       setFormError("An error occurred during sign-up.");
     }
   };
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ): Promise<void> => {
     e.preventDefault();
-    signUpExecutor();
+    await signUpExecutor();
   };
-  const onPressEnter = async () => {
-    signUpExecutor();
+  const onPressEnter = async (): Promise<void> => {
+    await signUpExecutor();
   };
-  const onEmailBlur = () => {
+  const onEmailBlur = (): void => {
     validateEmail();
   };
 

@@ -12,11 +12,11 @@ const StyledButton = styled(Button)({
   color: "#000000",
 });
 
-const Page404 = () => {
+const Page404 = (): JSX.Element => {
   const navigate = useNavigate();
   const isUser = useAppSelector((state) => state.authState.isLogged);
 
-  const redirect = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const redirect = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
     isUser ? navigate("/search") : navigate("/auth/login");
   };
