@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   IconButton,
@@ -20,10 +20,12 @@ import "./SignUp.css";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useAppDispatch } from "src/hooks/typedReduxHooks/typedReduxHooks";
 import { logIn } from "src/reducers/authSlice";
+import { InfinitySpin } from "react-loader-spinner";
+import { AUTH_SPINNER } from "src/utils/colorConsts";
 
 const SignUp = () => {
-
-  const emailRef = useRef<HTMLInputElement | null>(null);
+  // const emailRef = useRef<HTMLInputElement | null>(null);
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -32,6 +34,7 @@ const SignUp = () => {
     null
   );
   const [isDisabled, setIsDisabled] = useState(true);
+  const [isSigningIn, setIsSigningIn] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -51,7 +54,7 @@ const SignUp = () => {
   };
 
   const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // setEmail(e.target.value);
+    setEmail(e.target.value);
 
     e.target.value.match(emailFormat)
       ? setEmailError(null)
@@ -68,8 +71,8 @@ const SignUp = () => {
         );
   };
   const validateEmail = async () => {
-    if (emailRef.current && emailRef.current.value) {
-      const email = emailRef.current.value;
+    if (email.match(emailFormat)) {
+      
 
       try {
         const signInMethods = await fetchSignInMethodsForEmail(auth, email);
@@ -92,90 +95,53 @@ const SignUp = () => {
   ) => {
     setPasswordConfirmation(e.target.value);
   };
-
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
-    if (!emailRef.current?.value || !password || !passwordConfirmation) {
+  const signUpExecutor = async () => {
+    if (!email || !password || !passwordConfirmation) {
       return;
     }
 
     if (password !== passwordConfirmation) {
       return;
     }
-
+    setIsSigningIn(true);
     try {
-      if (emailRef.current) {
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          emailRef.current.value,
-          password
-        );
-        const user = userCredential.user;
-       
-        dispatch(
-          logIn({
-            isLogged: true,
-            email: emailRef.current.value,
-            uid: user.uid,
-          })
-        );
-        const idToken = await user.getIdToken();
-        localStorage.setItem(
-          "userData",
-          JSON.stringify({
-            email: emailRef.current.value,
-            token: idToken,
-            uid: user.uid,
-          })
-        );
-        navigate("/search");
-      }
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      dispatch(
+        logIn({
+          isLogged: true,
+          email: email,
+          uid: user.uid,
+        })
+      );
+      setIsSigningIn(false);
+      const idToken = await user.getIdToken();
+      localStorage.setItem(
+        "userData",
+        JSON.stringify({
+          email: email,
+          token: idToken,
+          uid: user.uid,
+        })
+      );
+
+      navigate("/search");
     } catch (error) {
       console.error("Sign-up error:", error);
       setFormError("An error occurred during sign-up.");
     }
   };
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    signUpExecutor();
+  };
   const onPressEnter = async () => {
-    if (!emailRef.current?.value || !password || !passwordConfirmation) {
-      return;
-    }
-
-    if (password !== passwordConfirmation) {
-      return;
-    }
-
-    try {
-      if (emailRef.current) {
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          emailRef.current.value,
-          password
-        );
-        const user = userCredential.user;
-
-        dispatch(
-          logIn({
-            isLogged: true,
-            email: emailRef.current.value,
-            uid: user.uid,
-          })
-        );
-        const idToken = await user.getIdToken();
-        localStorage.setItem(
-          "userData",
-          JSON.stringify({
-            email: emailRef.current.value,
-            token: idToken,
-            uid: user.uid,
-          })
-        );
-        navigate("/search");
-      }
-    } catch (error) {
-      //console.error("Sign-up error:", error);
-      setFormError("An error occurred during sign-up.");
-    }
+    signUpExecutor();
   };
   const onEmailBlur = () => {
     validateEmail();
@@ -222,104 +188,109 @@ const SignUp = () => {
       navigate("/search", { replace: true });
     }
   }, []);
+  const loginSpinner = <InfinitySpin width="200" color={AUTH_SPINNER} />;
   return (
     <>
-      <div className="signup">
-        <Typography variant="h5" sx={{ color: "black", fontWeight: "bold" }}>
-          Sign Up
-        </Typography>
-        <TextField
-          required
-          id="signup-email"
-          label="Email"
-          // value={email}
-          inputRef={emailRef}
-          onChange={onEmailChange}
-          onBlur={onEmailBlur}
-          fullWidth={true}
-          error={!!emailError}
-          helperText={emailError}
-        ></TextField>
-        <TextField
-          required
-          id="signup-password"
-          label="Password"
-          type={showPassword ? "text" : "password"}
-          value={password}
-          onChange={onPasswordChange}
-          fullWidth={true}
-          error={!!passwordError}
-          helperText={passwordError}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  tabIndex={-1}
-                  aria-label="toggle password visibility"
-                  onClick={() => showPasswordOnClick(setShowPassword)}
-                  onMouseDown={mouseDownShowPassword}
-                >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        ></TextField>
-        <TextField
-          required
-          id="signup-password-confirmation"
-          label="Repeat Password"
-          type={showPasswordRepeat ? "text" : "password"}
-          value={passwordConfirmation}
-          onChange={handlePasswordConfirmationChange}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              onPressEnter();
-            }
-          }}
-          fullWidth={true}
-          error={!!passwordMatchError}
-          helperText={passwordMatchError}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  tabIndex={-1}
-                  aria-label="toggle password visibility"
-                  onClick={() => showPasswordOnClick(setShowPasswordRepeat)}
-                  onMouseDown={mouseDownShowPassword}
-                >
-                  {showPasswordRepeat ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        ></TextField>
-        <Button
-          fullWidth={true}
-          sx={{ backgroundColor: "#D8E7FF" }}
-          disabled={isDisabled}
-          onClick={handleSubmit}
-        >
-          Create Account
-        </Button>
-        <Typography
-          variant="subtitle2"
-          sx={{ color: "black", fontSize: "14px" }}
-        >
-          {"Already have an account? "}
-          <Link
-            href="#"
-            underline="hover"
-            sx={{ color: "black", fontSize: "16px", fontWeight: "bold" }}
-            component={RouterLink}
-            to="/auth/login"
+      {isSigningIn ? (
+        <div className="signup-spinner">{loginSpinner}</div>
+      ) : (
+        <div className="signup">
+          <Typography variant="h5" sx={{ color: "black", fontWeight: "bold" }}>
+            Sign Up
+          </Typography>
+          <TextField
+            required
+            id="signup-email"
+            label="Email"
+            // value={email}
+            value={email}
+            onChange={onEmailChange}
+            onBlur={onEmailBlur}
+            fullWidth={true}
+            error={!!emailError}
+            helperText={emailError}
+          ></TextField>
+          <TextField
+            required
+            id="signup-password"
+            label="Password"
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={onPasswordChange}
+            fullWidth={true}
+            error={!!passwordError}
+            helperText={passwordError}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    tabIndex={-1}
+                    aria-label="toggle password visibility"
+                    onClick={() => showPasswordOnClick(setShowPassword)}
+                    onMouseDown={mouseDownShowPassword}
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          ></TextField>
+          <TextField
+            required
+            id="signup-password-confirmation"
+            label="Repeat Password"
+            type={showPasswordRepeat ? "text" : "password"}
+            value={passwordConfirmation}
+            onChange={handlePasswordConfirmationChange}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                onPressEnter();
+              }
+            }}
+            fullWidth={true}
+            error={!!passwordMatchError}
+            helperText={passwordMatchError}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    tabIndex={-1}
+                    aria-label="toggle password visibility"
+                    onClick={() => showPasswordOnClick(setShowPasswordRepeat)}
+                    onMouseDown={mouseDownShowPassword}
+                  >
+                    {showPasswordRepeat ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          ></TextField>
+          <Button
+            fullWidth={true}
+            sx={{ backgroundColor: "#D8E7FF" }}
+            disabled={isDisabled}
+            onClick={handleSubmit}
           >
-            {"Login"}
-          </Link>
-        </Typography>
-        {formError && <Typography>{formError}</Typography>}
-      </div>
+            Create Account
+          </Button>
+          <Typography
+            variant="subtitle2"
+            sx={{ color: "black", fontSize: "14px" }}
+          >
+            {"Already have an account? "}
+            <Link
+              href="#"
+              underline="hover"
+              sx={{ color: "black", fontSize: "16px", fontWeight: "bold" }}
+              component={RouterLink}
+              to="/auth/login"
+            >
+              {"Login"}
+            </Link>
+          </Typography>
+          {formError && <Typography>{formError}</Typography>}
+        </div>
+      )}
     </>
   );
 };
