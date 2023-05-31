@@ -11,7 +11,7 @@ interface IsChanged {
 }
 
 export const setApplyButtonStatus = (isChanged: IsChanged) => {
-  for (let key in isChanged) {
+  for (const key in isChanged) {
     if (isChanged[key as keyof IsChanged]) {
       return true;
     }

@@ -7,13 +7,14 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+
 import { Link } from "react-router-dom";
 import {
   useAppDispatch,
   useAppSelector,
-} from "../../hooks/typedReduxHooks/typedReduxHooks";
+} from "src/hooks/typedReduxHooks/typedReduxHooks";
 import { v4 as uuidv4 } from "uuid";
-import SortIcon from "../../assets/sort-Icon.svg";
+import SortIcon from "src/assets/sort-Icon.svg";
 import { Dna } from "react-loader-spinner";
 import "./SearchTable.css";
 import React, {
@@ -23,32 +24,25 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { fetchData } from "../../reducers/searchSlice";
-
-// type TableData = {
-//   entry: string;
-//   entryName: string;
-//   gene: string;
-//   organism: string;
-//   location: string;
-//   length: string;
-//   id: string;
-// };
-
+import { fetchData, fetchSortedData } from "src/reducers/searchSlice";
+import { CustomTableCell } from "./styled";
 interface CustomTableRowProps
   extends React.HTMLAttributes<HTMLTableRowElement> {
   children: ReactNode;
 }
-//wrapped it in forward ref in order to provide ref property, as the default tableRow does not support it
-const CustomTableRow = forwardRef<HTMLTableRowElement, CustomTableRowProps>(
-  ({ children, ...props }, ref) => (
-    <TableRow ref={ref} {...props}>
-      {children}
-    </TableRow>
-  )
-);
 
-const SearchTable: React.FC = () => {
+export const CustomTableRow = forwardRef<
+  HTMLTableRowElement,
+  CustomTableRowProps
+>(({ children, ...props }, ref) => (
+  <TableRow ref={ref} {...props}>
+    {children}
+  </TableRow>
+));
+
+//wrapped it in forward ref in order to provide ref property, as the default tableRow does not support it
+
+const SearchTable: React.FC = React.memo(() => {
   const searchData = useAppSelector((state) => {
     return state.searchState.data;
   });
@@ -61,15 +55,44 @@ const SearchTable: React.FC = () => {
 
   const [sortOrder, setSortOrder] = useState<string | null>(null);
   //experiment with sort
-  const handleSortIconClick = () => {
+  const searchTerm = useAppSelector((state) => state.searchState.searchTerm);
+  const filters = useAppSelector((state) => state.searchState.filters);
+
+  const handleSortIconClick = (sortField: string) => {
     if (sortOrder === "asc") {
+      dispatch(
+        fetchSortedData({
+          searchTerm: searchTerm,
+          filters: filters,
+          sortField: sortField,
+          sortOrder: "desc",
+          isExpandResult: false,
+        })
+      );
       setSortOrder("desc");
       console.log(sortOrder);
     } else if (sortOrder === "desc") {
+      dispatch(
+        fetchSortedData({
+          searchTerm: searchTerm,
+          filters: filters,
+          sortField: "",
+          sortOrder: null,
+          isExpandResult: false,
+        })
+      );
       setSortOrder(null);
       console.log("sortOrder is :", sortOrder);
     } else {
-      // setSortColumn(column);
+      dispatch(
+        fetchSortedData({
+          searchTerm: searchTerm,
+          filters: filters,
+          sortField: sortField,
+          sortOrder: "asc",
+          isExpandResult: false,
+        })
+      );
       setSortOrder("asc");
       console.log(sortOrder);
     }
@@ -86,7 +109,9 @@ const SearchTable: React.FC = () => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           if (nextLink) {
-            dispatch(fetchData({ searchQuery: "", nextLink ,isExpandResult:true}));
+            dispatch(
+              fetchData({ searchQuery: "", nextLink, isExpandResult: true })
+            );
           }
         }
       });
@@ -107,73 +132,93 @@ const SearchTable: React.FC = () => {
 
   return (
     <>
-      {isLoading ? (
-        <div className="spinner-container">
-          {
-            <Dna
-              visible={true}
-              height="80"
-              width="80"
-              ariaLabel="dna-loading"
-              wrapperStyle={{}}
-              wrapperClass="dna-wrapper"
-            />
-          }
+      {isLoading && !nextLink ? (
+        <div className="result-list-expand-loader">
+          <Dna
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="dna-loading"
+            wrapperStyle={{}}
+            wrapperClass="dna-wrapper"
+          />
         </div>
       ) : (
         <div className="table-container" ref={containerRef}>
-          <Table>
+          <Table stickyHeader>
             <TableHead>
               <TableRow className="table-row">
-                <TableCell className="column-name index">#</TableCell>
-                <TableCell className="column-name entry">
+                <CustomTableCell className="column-name index">
+                  #
+                </CustomTableCell>
+                <CustomTableCell>
                   <div className="header-cell">
                     <Typography>Entry</Typography>
-                    <Icon onClick={handleSortIconClick}>
+                    <Icon
+                      onClick={() => {
+                        handleSortIconClick("accession");
+                      }}
+                    >
                       <img src={SortIcon} alt="Filter Icon" />
                     </Icon>
                   </div>
-                </TableCell>
-                <TableCell className="column-name entryName">
+                </CustomTableCell>
+                <CustomTableCell className="column-name entryName">
                   <div className="header-cell">
                     <Typography>Entry Name</Typography>
-                    <Icon>
+                    <Icon
+                      onClick={() => {
+                        handleSortIconClick("id");
+                      }}
+                    >
                       <img src={SortIcon} alt="Filter Icon" />
                     </Icon>
                   </div>
-                </TableCell>
-                <TableCell className="column-name gene">
+                </CustomTableCell>
+                <CustomTableCell className="column-name gene">
                   <div className="header-cell">
                     <Typography>Gene</Typography>
-                    <Icon>
+                    <Icon
+                      onClick={() => {
+                        handleSortIconClick("gene");
+                      }}
+                    >
                       <img src={SortIcon} alt="Filter Icon" />
                     </Icon>
                   </div>
-                </TableCell>
-                <TableCell className="column-name organism">
+                </CustomTableCell>
+                <CustomTableCell className="column-name organism">
                   <div className="header-cell">
                     <Typography>Organism</Typography>
-                    <Icon>
+                    <Icon
+                      onClick={() => {
+                        handleSortIconClick("organism_name");
+                      }}
+                    >
                       <img src={SortIcon} alt="Filter Icon" />
                     </Icon>
                   </div>
-                </TableCell>
-                <TableCell className="column-name location">
+                </CustomTableCell>
+                <CustomTableCell className="column-name location">
                   <div className="header-cell">
                     <Typography> Subcellular Location</Typography>
-                    <Icon>
+                    {/* <Icon>
                       <img src={SortIcon} alt="Filter Icon" />
-                    </Icon>
+                    </Icon> */}
                   </div>
-                </TableCell>
-                <TableCell className="column-name length">
+                </CustomTableCell>
+                <CustomTableCell className="column-name length">
                   <div className="header-cell">
                     <Typography>Length</Typography>
-                    <Icon>
+                    <Icon
+                      onClick={() => {
+                        handleSortIconClick("length");
+                      }}
+                    >
                       <img src={SortIcon} alt="Filter Icon" />
                     </Icon>
                   </div>
-                </TableCell>
+                </CustomTableCell>
               </TableRow>
             </TableHead>
             {/* <div style={{ overflow: "auto" }} ref={containerRef}> */}
@@ -250,10 +295,22 @@ const SearchTable: React.FC = () => {
             </TableBody>
             {/* </div> */}
           </Table>
+          {isLoading && (
+            <div className="result-list-expand-loader">
+              <Dna
+                visible={true}
+                height="80"
+                width="80"
+                ariaLabel="dna-loading"
+                wrapperStyle={{}}
+                wrapperClass="dna-wrapper"
+              />
+            </div>
+          )}
         </div>
       )}
     </>
   );
-};
+});
 
 export default SearchTable;

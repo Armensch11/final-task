@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { UNIPROT_URL } from "../utils/uniprotURL/uniprotURL";
-import { SearchResponse, ResultsItem, Headers } from "../api/interfaces";
-import { extractNextLink } from "../utils/extractNextLink";
+import { UNIPROT_URL } from "src/utils/uniprotURL/uniprotURL";
+import { SearchResponse, ResultsItem, Headers } from "src/api/interfaces";
+import { extractNextLink } from "src/utils/extractNextLink";
 interface SearchState {
   data: ResultsItem[];
   searchTerm: string;
@@ -31,6 +31,13 @@ type RequestSearch = {
   nextLink?: string;
   isExpandResult: boolean;
 };
+type RequestSortedSearch = {
+  searchTerm: string;
+  filters: string;
+  sortField: string;
+  sortOrder: string | null;
+  isExpandResult: boolean;
+};
 export const fetchData = createAsyncThunk(
   "search/fetchData",
 
@@ -44,6 +51,47 @@ export const fetchData = createAsyncThunk(
         nextLink
           ? nextLink
           : `${UNIPROT_URL.BASE}search?fields=${UNIPROT_URL.FIELDS}&query=(${searchQuery})`
+      );
+
+      if (!response.ok) {
+        return null;
+      }
+
+      const data: SearchResponse = await response.json();
+
+      const linkHeader = extractNextLink(response.headers.get("link"));
+
+      const headers: Headers = {
+        link: linkHeader ? linkHeader : null,
+        totalResults: response.headers.get("X-Total-Results"),
+      };
+
+      const result = {
+        result: data.results,
+        headers,
+        isExpandResult: isExpandResult,
+      };
+      return result;
+    } catch (error) {
+      throw new Error("Failed to fetch data");
+    }
+  }
+);
+export const fetchSortedData = createAsyncThunk(
+  "search/fetchSortedData",
+
+  async ({
+    searchTerm,
+    filters,
+    sortField,
+    sortOrder,
+    isExpandResult,
+  }: RequestSortedSearch): Promise<SearchResult | null> => {
+    try {
+      const response = await fetch(
+        sortField && sortOrder
+          ? `${UNIPROT_URL.BASE}search?fields=${UNIPROT_URL.FIELDS}&query=(${searchTerm})${filters}&sort=${sortField} ${sortOrder}`
+          : `${UNIPROT_URL.BASE}search?fields=${UNIPROT_URL.FIELDS}&query=(${searchTerm})${filters}`
       );
 
       if (!response.ok) {
@@ -92,9 +140,11 @@ const searchSlice = createSlice({
       })
       .addCase(fetchData.fulfilled, (state, action) => {
         state.isLoading = false;
+        // @ts-ignore
         state.data = action.payload?.isExpandResult
           ? [...state.data, ...action.payload.result]
-          : [...action.payload.result];
+          : // @ts-ignore
+            [...action.payload.result];
         // state.searchTerm = action.meta.arg.searchQuery;
         state.totalResults = action.payload
           ? action.payload.headers.totalResults
@@ -104,6 +154,16 @@ const searchSlice = createSlice({
       .addCase(fetchData.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message || "Failed to fetch data";
+      })
+      //sorted data reducer
+      .addCase(fetchSortedData.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = action.payload?.isExpandResult
+          ? [...state.data, ...action.payload.result]
+          : // @ts-ignore
+            [...action.payload.result];
+        state.nextLink = action.payload ? action.payload.headers.link : null;
+        // Rest of the code remains the same
       });
   },
 });

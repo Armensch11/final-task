@@ -5,16 +5,20 @@ import {
   Outlet,
   Routes,
   Route,
+  useNavigate,
 } from "react-router-dom";
 import Details from "./details/Details";
 import Feature from "./feature/Feature";
 import Publics from "./publications/Publics";
 
-import { Typography } from "@mui/material";
-import { useAppDispatch } from "../../hooks/typedReduxHooks/typedReduxHooks";
+import { Button, Typography } from "@mui/material";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { useAppDispatch } from "src/hooks/typedReduxHooks/typedReduxHooks";
 import "./Protein.css";
-import { setProteinInfo } from "../../reducers/proteinSlice";
-import { UNIPROT_URL } from "../../utils/uniprotURL/uniprotURL";
+import { setProteinInfo } from "src/reducers/proteinSlice";
+import { UNIPROT_URL } from "src/utils/uniprotURL/uniprotURL";
+import { TEXT_BG } from "src/utils/colorConsts";
+
 interface ProteinData {
   uniProtkbId: string;
   organism: { scientificName: string };
@@ -31,9 +35,7 @@ const Protein = () => {
 
   const getProteinData = async () => {
     try {
-      const response = await fetch(
-        `${UNIPROT_URL.BASE}${proteinId}`
-      );
+      const response = await fetch(`${UNIPROT_URL.BASE}${proteinId}`);
       const proteinInfo = await response.json();
       // console.log(proteinInfo);
       setProtein(proteinInfo);
@@ -61,9 +63,22 @@ const Protein = () => {
   useEffect(() => {
     getProteinData();
   }, [proteinId]);
+  const navigate = useNavigate();
+
+  const onGoBack = () => {
+    navigate("/search"); // Navigate to another route
+  };
 
   return (
     <div className="protein-info-container">
+      <Button
+        onClick={() => {
+          onGoBack();
+        }}
+        sx={{ marginBottom: "24px", marginLeft: "-60px" }}
+      >
+        <ArrowBackIosNewIcon />
+      </Button>
       <div className="protein-info-header">
         <Typography variant="h5">
           {proteinId + " / " + protein?.uniProtkbId}
@@ -71,7 +86,7 @@ const Protein = () => {
         <Typography
           variant="subtitle1"
           sx={{
-            backgroundColor: "#D8E7FF",
+            backgroundColor: TEXT_BG,
             borderRadius: "12px",
             padding: "2px 12px",
             fontSize: "14px",
@@ -119,6 +134,7 @@ const Protein = () => {
       </div>
       <Outlet />
       <Routes>
+        <Route index element={<Details />} />
         <Route path="details" element={<Details />} />
         <Route path="feature" element={<Feature />} />
         <Route path="publications" element={<Publics />} />

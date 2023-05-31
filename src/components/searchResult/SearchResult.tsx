@@ -1,5 +1,5 @@
 import SearchTable from "../searchTable/SearchTable";
-import { useAppSelector } from "../../hooks/typedReduxHooks/typedReduxHooks";
+import { useAppSelector } from "src/hooks/typedReduxHooks/typedReduxHooks";
 import "./SearchResult.css";
 
 const SearchResult: React.FC = () => {
