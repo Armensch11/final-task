@@ -258,32 +258,28 @@ const SearchTable: React.FC = React.memo(() => {
                       className="table-row"
                       ref={lastElementRef}
                     >
-                      <TableCell className=" index">{index + 1}</TableCell>
-                      <TableCell className=" entry">
+                      <TableCell width="40">{index + 1}</TableCell>
+                      <TableCell width="120">
                         <Link to={`/protein/${item.primaryAccession}`}>
                           {item.primaryAccession}
                         </Link>
                       </TableCell>
-                      <TableCell className=" entryName">
-                        {item.uniProtkbId}
-                      </TableCell>
-                      <TableCell className=" gene">
+                      <TableCell width="120">{item.uniProtkbId}</TableCell>
+                      <TableCell width="120">
                         {item.genes
                           ? item.genes[0]?.geneName?.value
                           : "no genes data "}
                       </TableCell>
-                      <TableCell className=" organism">
+                      <TableCell width="180">
                         {item.organism.scientificName}
                       </TableCell>
-                      <TableCell className=" location">
+                      <TableCell width="120">
                         {item.comments
                           ? item.comments[0]?.subcellularLocations[0]?.location
                               .value
                           : "no location data"}
                       </TableCell>
-                      <TableCell className=" length">
-                        {item.sequence.length}
-                      </TableCell>
+                      <TableCell width="80">{item.sequence.length}</TableCell>
                     </CustomTableRow>
                   );
                 } else {

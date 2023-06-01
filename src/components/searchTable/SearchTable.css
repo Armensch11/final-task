@@ -39,18 +39,22 @@
 .entry {
   width: 100px;
   height: 40px;
+  overflow: hidden;
 }
 .entryName {
-  width: 140px;
+  width: 100px;
   height: 40px;
+  overflow: hidden;
 }
 .gene {
-  width: 120px;
+  width: 100px;
   height: 40px;
+  overflow: hidden;
 }
 .organism {
   width: 150px;
   height: 40px;
+  overflow: hidden;
 }
 .location {
   width: 180px;
