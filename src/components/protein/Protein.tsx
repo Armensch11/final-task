@@ -5,15 +5,19 @@ import {
   Outlet,
   Routes,
   Route,
+  useNavigate,
 } from "react-router-dom";
 import Details from "./details/Details";
 import Feature from "./feature/Feature";
 import Publics from "./publications/Publics";
 
-import { Typography } from "@mui/material";
-import { useAppDispatch } from "../../hooks/typedReduxHooks/typedReduxHooks";
+import { Button, Typography } from "@mui/material";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { useAppDispatch } from "src/hooks/typedReduxHooks/typedReduxHooks";
 import "./Protein.css";
-import { setProteinInfo } from "../../reducers/proteinSlice";
+import { setProteinInfo } from "src/reducers/proteinSlice";
+import { UNIPROT_URL } from "src/utils/uniprotURL/uniprotURL";
+import { TEXT_BG } from "src/utils/colorConsts";
 
 interface ProteinData {
   uniProtkbId: string;
@@ -23,17 +27,15 @@ interface ProteinData {
   geneType: string;
 }
 
-const Protein = () => {
+const Protein = (): JSX.Element => {
   const { proteinId } = useParams();
   const [protein, setProtein] = useState<ProteinData | null>(null);
   const dispatch = useAppDispatch();
   const [activeLink, setActiveLink] = useState("");
 
-  const getProteinData = async () => {
+  const getProteinData = async (): Promise<void> => {
     try {
-      const response = await fetch(
-        `https://rest.uniprot.org/uniprotkb/${proteinId}`
-      );
+      const response = await fetch(`${UNIPROT_URL.BASE}${proteinId}`);
       const proteinInfo = await response.json();
       // console.log(proteinInfo);
       setProtein(proteinInfo);
@@ -50,20 +52,35 @@ const Protein = () => {
       };
       dispatch(setProteinInfo(pickProteinData));
     } catch (error) {
-      console.error("Error fetching protein data:", error);
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
     }
   };
 
-  const onLinkClick = (link: string) => {
+  const onLinkClick = (link: string): void => {
     setActiveLink(link);
   };
 
   useEffect(() => {
     getProteinData();
   }, [proteinId]);
+  const navigate = useNavigate();
+
+  const onGoBack = (): void => {
+    navigate("/search"); // Navigate to another route
+  };
 
   return (
     <div className="protein-info-container">
+      <Button
+        onClick={() => {
+          onGoBack();
+        }}
+        sx={{ marginBottom: "24px", marginLeft: "-60px" }}
+      >
+        <ArrowBackIosNewIcon />
+      </Button>
       <div className="protein-info-header">
         <Typography variant="h5">
           {proteinId + " / " + protein?.uniProtkbId}
@@ -71,7 +88,7 @@ const Protein = () => {
         <Typography
           variant="subtitle1"
           sx={{
-            backgroundColor: "#D8E7FF",
+            backgroundColor: TEXT_BG,
             borderRadius: "12px",
             padding: "2px 12px",
             fontSize: "14px",
@@ -91,7 +108,7 @@ const Protein = () => {
           Gene
         </Typography>
         <Typography variant="subtitle2">
-          {protein?.genes[0].geneName.value}
+          {protein?.genes[0]?.geneName?.value}
         </Typography>
       </div>
       <div className="protein-info-main">
@@ -119,6 +136,7 @@ const Protein = () => {
       </div>
       <Outlet />
       <Routes>
+        <Route index element={<Details />} />
         <Route path="details" element={<Details />} />
         <Route path="feature" element={<Feature />} />
         <Route path="publications" element={<Publics />} />

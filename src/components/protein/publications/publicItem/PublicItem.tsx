@@ -5,7 +5,7 @@ import "./PublicItem.css";
 import { PUBL_URL } from "../../../../utils/publivationsURL/publicationsURL";
 import linkIcon from "../../../../assets/external-link-Icon.svg";
 
-type Link = {
+type LinkType = {
   database: string;
   id: string;
 };
@@ -16,7 +16,7 @@ type PublicItemProps = {
   categories?: string[];
   citied?: string[];
   source?: string;
-  links?: Link[];
+  links?: LinkType[];
   link3Title?: string;
 };
 const StyledLink = styled(Link)({
@@ -44,8 +44,8 @@ const PublicItem: FC<PublicItemProps> = ({
   source,
   links,
   link3Title,
-}) => {
-  const isLinkActive = (href: string) => href.length > 0;
+}): JSX.Element => {
+  const isLinkActive = (href: string): boolean => href.length > 0;
   return (
     <>
       <div className="publication-container">

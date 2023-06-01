@@ -3,8 +3,8 @@ import "./UserLayout.css";
 import {
   useAppDispatch,
   useAppSelector,
-} from "../../../hooks/typedReduxHooks/typedReduxHooks";
-import { logOut } from "../../../reducers/authSlice";
+} from "src/hooks/typedReduxHooks/typedReduxHooks";
+import { logOut } from "src/reducers/authSlice";
 import { ReactNode, FC } from "react";
 
 type UserLayoutProps = {
@@ -17,7 +17,7 @@ const StyledButton = styled(Button)({
   textTransform: "none",
 });
 
-const UserLayout: FC<UserLayoutProps> = ({ children }) => {
+const UserLayout: FC<UserLayoutProps> = ({ children }): JSX.Element => {
   const userEmail = useAppSelector((state) => state.authState.userEmail);
   const dispatch = useAppDispatch();
 

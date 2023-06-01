@@ -1,7 +1,7 @@
 import { Typography, Button, styled } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import "./Page404.css";
-import { useAppSelector } from "../../hooks/typedReduxHooks/typedReduxHooks";
+import { useAppSelector } from "src/hooks/typedReduxHooks/typedReduxHooks";
 
 const StyledButton = styled(Button)({
   fontSize: "14px",
@@ -12,11 +12,11 @@ const StyledButton = styled(Button)({
   color: "#000000",
 });
 
-const Page404 = () => {
+const Page404 = (): JSX.Element => {
   const navigate = useNavigate();
   const isUser = useAppSelector((state) => state.authState.isLogged);
 
-  const redirect = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const redirect = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
     isUser ? navigate("/search") : navigate("/auth/login");
   };
@@ -34,7 +34,7 @@ const Page404 = () => {
         </StyledButton>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Page404;

@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useAppDispatch } from "../typedReduxHooks/typedReduxHooks";
-import { logIn } from "../../reducers/authSlice";
+import { logIn } from "src/reducers/authSlice";
 
-const useAuth = () => {
+const useAuth = (): void => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -14,8 +14,6 @@ const useAuth = () => {
       dispatch(logIn({ isLogged: true, ...parsedUserData }));
     }
   }, []);
-
-  return;
 };
 
 export default useAuth;

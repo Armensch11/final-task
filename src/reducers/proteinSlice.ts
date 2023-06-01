@@ -36,5 +36,5 @@ const proteinSlice = createSlice({
     },
   },
 });
-export const { setProteinInfo} = proteinSlice.actions;
+export const { setProteinInfo } = proteinSlice.actions;
 export default proteinSlice.reducer;

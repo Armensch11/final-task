@@ -5,14 +5,14 @@ import SignUpPage from "./pages/SignUpPage";
 import { Routes, Route } from "react-router-dom";
 
 import "./App.css";
-import { useAppSelector } from "../src/hooks/typedReduxHooks/typedReduxHooks";
-import Home from "../src/components/home/Home";
+import { useAppSelector } from "src/hooks/typedReduxHooks/typedReduxHooks";
+import Home from "src/components/home/Home";
 import Protein from "./components/protein/Protein";
-import ProtectedRoute from "../src/components/auth/protectedRoute/ProtectedRoute";
+import ProtectedRoute from "src/components/auth/protectedRoute/ProtectedRoute";
 
-import Page404 from "../src/components/404/Page404";
+import Page404 from "src/components/404/Page404";
 
-const App = () => {
+const App = (): JSX.Element => {
   const isAuth = useAppSelector((state) => {
     return state.authState.isLogged;
   });

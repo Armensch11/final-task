@@ -1,13 +1,15 @@
 import SearchTable from "../searchTable/SearchTable";
-import { useAppSelector } from "../../hooks/typedReduxHooks/typedReduxHooks";
+import { useAppSelector } from "src/hooks/typedReduxHooks/typedReduxHooks";
 import "./SearchResult.css";
 
-const SearchResult = () => {
+const SearchResult: React.FC = () => {
   const result = useAppSelector((state) => {
-    return state.searchState.data;
+    return state.searchState.totalResults;
   });
   const searchTerm = useAppSelector((state) => {
-    return state.searchState.searchTerm;
+    const term = state.searchState.searchTerm;
+
+    return term;
   });
 
   const searchPlaceholder = (
@@ -19,11 +21,12 @@ const SearchResult = () => {
     <div>
       <p
         style={{ marginLeft: "130px" }}
-      >{`${result.length} Search results found for "${searchTerm}" `}</p>
+      >{`${result} Search results found for "${searchTerm}" `}</p>
       <SearchTable />
     </div>
   );
-  return <>{result.length ? hasResult : searchPlaceholder}</>;
+
+  return <>{!!result?.length ? hasResult : searchPlaceholder}</>;
 };
 
 export default SearchResult;
