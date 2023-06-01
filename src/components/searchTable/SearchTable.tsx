@@ -27,6 +27,7 @@ import React, {
 import { fetchData, fetchSortedData } from "src/reducers/searchSlice";
 import { CustomTableCell } from "./styled";
 import { sortIcons, setIconsToDefault } from "src/utils/sortIconHandle";
+import { TEXT_BG } from "src/utils/colorConsts";
 interface CustomTableRowProps
   extends React.HTMLAttributes<HTMLTableRowElement> {
   children: ReactNode;
@@ -166,13 +167,13 @@ const SearchTable: React.FC = React.memo(() => {
         </div>
       ) : (
         <div className="table-container" ref={containerRef}>
-          <Table stickyHeader>
+          <Table stickyHeader sx={{ minWidth: 500 }}>
             <TableHead>
               <TableRow className="table-row">
                 <CustomTableCell className="column-name index" width="40">
                   #
                 </CustomTableCell>
-                <CustomTableCell width="150" >
+                <CustomTableCell width="150">
                   <div className="header-cell">
                     <Typography>Entry</Typography>
                     <Icon
@@ -229,7 +230,6 @@ const SearchTable: React.FC = React.memo(() => {
                 <CustomTableCell className="column-name location" width="150">
                   <div className="header-cell">
                     <Typography> Subcellular Location</Typography>
-                 
                   </div>
                 </CustomTableCell>
                 <CustomTableCell className="column-name length" width="100">
@@ -268,8 +268,15 @@ const SearchTable: React.FC = React.memo(() => {
                           ? item.genes[0]?.geneName?.value
                           : "no genes data "}
                       </TableCell>
-                      <TableCell width="220">
-                        {item.organism.scientificName}
+                      <TableCell width="220" align="center">
+                        <Typography
+                          sx={{
+                            backgroundColor: TEXT_BG,
+                            borderRadius: "12px",
+                          }}
+                        >
+                          {item.organism.scientificName}
+                        </Typography>
                       </TableCell>
                       <TableCell width="150">
                         {item.comments
@@ -295,8 +302,15 @@ const SearchTable: React.FC = React.memo(() => {
                           ? item.genes[0]?.geneName?.value
                           : "no genes data "}
                       </TableCell>
-                      <TableCell width="220">
-                        {item.organism.scientificName}
+                      <TableCell width="220" align="center">
+                        <Typography
+                          sx={{
+                            backgroundColor: TEXT_BG,
+                            borderRadius: "12px",
+                          }}
+                        >
+                          {item.organism.scientificName}
+                        </Typography>
                       </TableCell>
                       <TableCell width="150">
                         {item.comments

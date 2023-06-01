@@ -1,5 +1,4 @@
 .table-container {
-  min-width: 1400px;
   height: 600px;
   padding-left: 130px;
   padding-right: 130px;
@@ -22,7 +21,6 @@
   justify-content: space-between;
   align-items: center;
   height: 40px;
- 
 }
 .table-row {
   display: flex;
