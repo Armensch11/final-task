@@ -169,10 +169,10 @@ const SearchTable: React.FC = React.memo(() => {
           <Table stickyHeader>
             <TableHead>
               <TableRow className="table-row">
-                <CustomTableCell className="column-name index">
+                <CustomTableCell className="column-name index" width="40">
                   #
                 </CustomTableCell>
-                <CustomTableCell>
+                <CustomTableCell width="150" >
                   <div className="header-cell">
                     <Typography>Entry</Typography>
                     <Icon
@@ -187,7 +187,7 @@ const SearchTable: React.FC = React.memo(() => {
                     </Icon>
                   </div>
                 </CustomTableCell>
-                <CustomTableCell className="column-name entryName">
+                <CustomTableCell className="column-name entryName" width="150">
                   <div className="header-cell">
                     <Typography>Entry Name</Typography>
                     <Icon
@@ -199,7 +199,7 @@ const SearchTable: React.FC = React.memo(() => {
                     </Icon>
                   </div>
                 </CustomTableCell>
-                <CustomTableCell className="column-name gene">
+                <CustomTableCell className="column-name gene" width="150">
                   <div className="header-cell">
                     <Typography>Gene</Typography>
                     <Icon
@@ -211,7 +211,7 @@ const SearchTable: React.FC = React.memo(() => {
                     </Icon>
                   </div>
                 </CustomTableCell>
-                <CustomTableCell className="column-name organism">
+                <CustomTableCell className="column-name organism" width="220">
                   <div className="header-cell">
                     <Typography>Organism</Typography>
                     <Icon
@@ -226,15 +226,13 @@ const SearchTable: React.FC = React.memo(() => {
                     </Icon>
                   </div>
                 </CustomTableCell>
-                <CustomTableCell className="column-name location">
+                <CustomTableCell className="column-name location" width="150">
                   <div className="header-cell">
                     <Typography> Subcellular Location</Typography>
-                    {/* <Icon>
-                      <img src={SortIcon} alt="Filter Icon" />
-                    </Icon> */}
+                 
                   </div>
                 </CustomTableCell>
-                <CustomTableCell className="column-name length">
+                <CustomTableCell className="column-name length" width="100">
                   <div className="header-cell">
                     <Typography>Length</Typography>
                     <Icon
@@ -259,58 +257,54 @@ const SearchTable: React.FC = React.memo(() => {
                       ref={lastElementRef}
                     >
                       <TableCell width="40">{index + 1}</TableCell>
-                      <TableCell width="120">
+                      <TableCell width="150">
                         <Link to={`/protein/${item.primaryAccession}`}>
                           {item.primaryAccession}
                         </Link>
                       </TableCell>
-                      <TableCell width="120">{item.uniProtkbId}</TableCell>
-                      <TableCell width="120">
+                      <TableCell width="150">{item.uniProtkbId}</TableCell>
+                      <TableCell width="150">
                         {item.genes
                           ? item.genes[0]?.geneName?.value
                           : "no genes data "}
                       </TableCell>
-                      <TableCell width="180">
+                      <TableCell width="220">
                         {item.organism.scientificName}
                       </TableCell>
-                      <TableCell width="120">
+                      <TableCell width="150">
                         {item.comments
                           ? item.comments[0]?.subcellularLocations[0]?.location
                               .value
                           : "no location data"}
                       </TableCell>
-                      <TableCell width="80">{item.sequence.length}</TableCell>
+                      <TableCell width="100">{item.sequence.length}</TableCell>
                     </CustomTableRow>
                   );
                 } else {
                   return (
                     <TableRow key={uuidv4()} className="table-row">
-                      <TableCell className=" index">{index + 1}</TableCell>
-                      <TableCell className=" entry">
+                      <TableCell width="40">{index + 1}</TableCell>
+                      <TableCell width="150">
                         <Link to={`/protein/${item.primaryAccession}`}>
                           {item.primaryAccession}
                         </Link>
                       </TableCell>
-                      <TableCell className=" entryName">
-                        {item.uniProtkbId}
-                      </TableCell>
-                      <TableCell className=" gene">
+                      <TableCell width="150">{item.uniProtkbId}</TableCell>
+                      <TableCell width="150">
                         {item.genes
                           ? item.genes[0]?.geneName?.value
                           : "no genes data "}
                       </TableCell>
-                      <TableCell className=" organism">
+                      <TableCell width="220">
                         {item.organism.scientificName}
                       </TableCell>
-                      <TableCell className=" location">
+                      <TableCell width="150">
                         {item.comments
                           ? item.comments[0]?.subcellularLocations[0]?.location
                               .value
                           : "no location data"}
                       </TableCell>
-                      <TableCell className=" length">
-                        {item.sequence.length}
-                      </TableCell>
+                      <TableCell width="100">{item.sequence.length}</TableCell>
                     </TableRow>
                   );
                 }

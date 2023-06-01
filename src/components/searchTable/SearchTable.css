@@ -1,5 +1,5 @@
 .table-container {
-  width: 1400px;
+  min-width: 1400px;
   height: 600px;
   padding-left: 130px;
   padding-right: 130px;
@@ -8,10 +8,7 @@
   background-color: white;
   overflow-x: scroll;
 }
-/* .results-table {
-  height: 500px;
-  overflow: scroll;
-} */
+
 .column-name {
   background-color: #f5f5f5;
   border-radius: 4px;
@@ -24,6 +21,8 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  height: 40px;
+ 
 }
 .table-row {
   display: flex;
@@ -32,38 +31,7 @@
   justify-content: space-between;
   align-items: center;
 }
-.index {
-  width: 50px;
-  height: 40px;
-}
-.entry {
-  width: 100px;
-  height: 40px;
-  overflow: hidden;
-}
-.entryName {
-  width: 100px;
-  height: 40px;
-  overflow: hidden;
-}
-.gene {
-  width: 100px;
-  height: 40px;
-  overflow: hidden;
-}
-.organism {
-  width: 150px;
-  height: 40px;
-  overflow: hidden;
-}
-.location {
-  width: 180px;
-  height: 40px;
-}
-.length {
-  width: 100px;
-  height: 40px;
-}
+/*  */
 .spinner-container {
   width: 100%;
   height: 100%;
