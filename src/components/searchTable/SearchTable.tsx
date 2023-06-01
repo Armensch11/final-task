@@ -14,7 +14,7 @@ import {
   useAppSelector,
 } from "src/hooks/typedReduxHooks/typedReduxHooks";
 import { v4 as uuidv4 } from "uuid";
-import SortIcon from "src/assets/sort-Icon.svg";
+
 import { Dna } from "react-loader-spinner";
 import "./SearchTable.css";
 import React, {
@@ -26,6 +26,7 @@ import React, {
 } from "react";
 import { fetchData, fetchSortedData } from "src/reducers/searchSlice";
 import { CustomTableCell } from "./styled";
+import { sortIcons, setIconsToDefault } from "src/utils/sortIconHandle";
 interface CustomTableRowProps
   extends React.HTMLAttributes<HTMLTableRowElement> {
   children: ReactNode;
@@ -58,6 +59,14 @@ const SearchTable: React.FC = React.memo(() => {
   const searchTerm = useAppSelector((state) => state.searchState.searchTerm);
   const filters = useAppSelector((state) => state.searchState.filters);
 
+  const [sortIcon, setSortIcon] = useState({
+    accession: "default",
+    id: "default",
+    gene: "default",
+    organism_name: "default",
+    length: "default",
+  });
+
   const handleSortIconClick = (sortField: string): void => {
     if (sortOrder === "asc") {
       dispatch(
@@ -69,6 +78,11 @@ const SearchTable: React.FC = React.memo(() => {
           isExpandResult: false,
         })
       );
+      setSortIcon((prevState) => {
+        setIconsToDefault(prevState);
+        const newState = { ...prevState, [sortField]: "desc" };
+        return newState;
+      });
       setSortOrder("desc");
     } else if (sortOrder === "desc") {
       dispatch(
@@ -80,6 +94,11 @@ const SearchTable: React.FC = React.memo(() => {
           isExpandResult: false,
         })
       );
+      setSortIcon((prevState) => {
+        setIconsToDefault(prevState);
+        const newState = { ...prevState, [sortField]: "default" };
+        return newState;
+      });
       setSortOrder(null);
     } else {
       dispatch(
@@ -91,6 +110,11 @@ const SearchTable: React.FC = React.memo(() => {
           isExpandResult: false,
         })
       );
+      setSortIcon((prevState) => {
+        setIconsToDefault(prevState);
+        const newState = { ...prevState, [sortField]: "asc" };
+        return newState;
+      });
       setSortOrder("asc");
     }
   };
@@ -156,7 +180,10 @@ const SearchTable: React.FC = React.memo(() => {
                         handleSortIconClick("accession");
                       }}
                     >
-                      <img src={SortIcon} alt="Filter Icon" />
+                      <img
+                        src={sortIcons[sortIcon.accession]}
+                        alt="Filter Icon"
+                      />
                     </Icon>
                   </div>
                 </CustomTableCell>
@@ -168,7 +195,7 @@ const SearchTable: React.FC = React.memo(() => {
                         handleSortIconClick("id");
                       }}
                     >
-                      <img src={SortIcon} alt="Filter Icon" />
+                      <img src={sortIcons[sortIcon.id]} alt="Filter Icon" />
                     </Icon>
                   </div>
                 </CustomTableCell>
@@ -180,7 +207,7 @@ const SearchTable: React.FC = React.memo(() => {
                         handleSortIconClick("gene");
                       }}
                     >
-                      <img src={SortIcon} alt="Filter Icon" />
+                      <img src={sortIcons[sortIcon.gene]} alt="Filter Icon" />
                     </Icon>
                   </div>
                 </CustomTableCell>
@@ -192,7 +219,10 @@ const SearchTable: React.FC = React.memo(() => {
                         handleSortIconClick("organism_name");
                       }}
                     >
-                      <img src={SortIcon} alt="Filter Icon" />
+                      <img
+                        src={sortIcons[sortIcon.organism_name]}
+                        alt="Filter Icon"
+                      />
                     </Icon>
                   </div>
                 </CustomTableCell>
@@ -212,7 +242,7 @@ const SearchTable: React.FC = React.memo(() => {
                         handleSortIconClick("length");
                       }}
                     >
-                      <img src={SortIcon} alt="Filter Icon" />
+                      <img src={sortIcons[sortIcon.length]} alt="Filter Icon" />
                     </Icon>
                   </div>
                 </CustomTableCell>

@@ -120,7 +120,7 @@ export const fetchSortedData = createAsyncThunk(
         headers,
         isExpandResult: isExpandResult,
       };
-      console.log(result);
+
       return result;
     } catch (error) {
       throw new Error("Failed to fetch data");
