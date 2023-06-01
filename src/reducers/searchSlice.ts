@@ -54,7 +54,11 @@ export const fetchData = createAsyncThunk(
       );
 
       if (!response.ok) {
-        return null;
+        return {
+          result: [],
+          headers: { link: "", totalResults: "0" },
+          isExpandResult: isExpandResult,
+        };
       }
 
       const data: SearchResponse = await response.json();
@@ -95,7 +99,11 @@ export const fetchSortedData = createAsyncThunk(
       );
 
       if (!response.ok) {
-        return null;
+        return {
+          result: [],
+          headers: { link: "", totalResults: "0" },
+          isExpandResult: isExpandResult,
+        };
       }
 
       const data: SearchResponse = await response.json();
@@ -112,6 +120,7 @@ export const fetchSortedData = createAsyncThunk(
         headers,
         isExpandResult: isExpandResult,
       };
+      console.log(result);
       return result;
     } catch (error) {
       throw new Error("Failed to fetch data");
@@ -141,11 +150,12 @@ const searchSlice = createSlice({
       .addCase(fetchData.fulfilled, (state, action) => {
         state.isLoading = false;
         // @ts-ignore
-        state.data =
-          action.payload?.isExpandResult && action.payload.result
-            ? [...state.data, ...action.payload.result]
-            : // @ts-ignore
-              [...action.payload.result];
+        state.data = action.payload?.isExpandResult
+          ? [...state.data, ...action.payload.result]
+          : // @ts-ignore
+          action.payload?.result.length
+          ? [...action.payload.result]
+          : [];
         // state.searchTerm = action.meta.arg.searchQuery;
         state.totalResults = action.payload
           ? action.payload.headers.totalResults
@@ -154,6 +164,7 @@ const searchSlice = createSlice({
       })
       .addCase(fetchData.rejected, (state, action) => {
         state.isLoading = false;
+        state.data = [];
         state.error = action.error.message || "Failed to fetch data";
       })
       //sorted data reducer
