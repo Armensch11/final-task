@@ -5,4 +5,4 @@ Quantori JS School final task
 
 **End date** - Wed 31 May
 
-**Deployed at https://luxury-raindrop-f7ce1e.netlify.app/ 
+**Deployed** at https://luxury-raindrop-f7ce1e.netlify.app/ 
